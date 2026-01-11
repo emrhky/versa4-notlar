@@ -1,13 +1,13 @@
 {
-  "name": "versa4-notes",
-  "version": "1.0.0",
+  "name": "bilek-notlari",
+  "version": "1.0.1",
   "private": true,
   "fitbit": {
-    "appUUID": "a1b2c3d4-e5f6-4a3b-8c2d-1e2f3a4b5c6d",
+    "appUUID": "f3d5e2a1-1234-4a3b-8c2d-9e8f7a6b5c4d", 
     "appType": "app",
-    "appDisplayName": "Bilek Notlarim",
+    "appDisplayName": "Not Defterim",
     "iconFile": "resources/icon.png",
-    "wipeColor": "#2196f3",
+    "wipeColor": "#000000",
     "requestedPermissions": [
       "access_internet"
     ],
