@@ -1,0 +1,24 @@
+{
+  "name": "versa4-notes",
+  "version": "1.0.0",
+  "private": true,
+  "fitbit": {
+    "appUUID": "a1b2c3d4-e5f6-4a3b-8c2d-1e2f3a4b5c6d",
+    "appType": "app",
+    "appDisplayName": "Bilek Notlarım",
+    "iconFile": "resources/icon.png",
+    "wipeColor": "#2196f3",
+    "requestedPermissions": [
+      "access_internet"
+    ],
+    "buildTargets": [
+      "hera"
+    ],
+    "sdkVersion": "6.0.0",
+    "defaultLanguage": "en-US"
+  },
+  "devDependencies": {
+    "@fitbit/sdk": "~6.0.0",
+    "@fitbit/sdk-cli": "^1.7.3"
+  }
+}
