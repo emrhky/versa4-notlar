@@ -8,17 +8,30 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18' # SDK 6.0 için en iyisi
+          node-version: '16'
       - name: Install
         run: |
           npm install --ignore-scripts
-          # Paketleri tek tek ve zorlayarak kuruyoruz
-          npm install @fitbit/sdk-cli@1.7.3 --save-dev --ignore-scripts
-          npm install @fitbit/sdk-build-targets@1.2.1 --save-dev --ignore-scripts
+          npm install @fitbit/sdk-cli --save-dev --ignore-scripts
       - name: Build
         run: npx fitbit-build
+      - name: Identity Swap (Atlas to Hera)
+        run: |
+          # build klasörüne gir
+          cd build
+          # .fba dosyasını geçici bir klasöre çıkar (fba aslında bir ziptir)
+          unzip *.fba -d tmp_fba
+          # Manifest dosyasındaki 'atlas' ibarelerini 'hera' ile değiştir
+          sed -i 's/"atlas"/"hera"/g' tmp_fba/manifest.json
+          # Dosyaları tekrar paketle
+          cd tmp_fba
+          zip -r ../BilekNotlari_Versa4.fba .
+          cd ..
+          # Eski dosyaları temizle sadece yeni Versa 4 dosyasını bırak
+          rm -rf tmp_fba
+          rm atlas.fba || true
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: Versa4-Not-Uygulamasi
-          path: build/*.fba
+          name: Versa4-Gercek-Paket
+          path: build/BilekNotlari_Versa4.fba
