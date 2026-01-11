@@ -1,4 +1,4 @@
-name: Fitbit Build
+name: Fitbit Build Versa 4
 on: [push]
 jobs:
   build:
@@ -8,26 +8,24 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '16'
-      - name: Install
+          node-version: '14' # Versa 4 projelerinde Node 14 veya 16 daha stabil
+      - name: Install Dependencies
         run: |
           npm install --ignore-scripts
-          npm install @fitbit/sdk-cli --save-dev --ignore-scripts
+          npm install @fitbit/sdk-cli@1.7.3 --save-dev --ignore-scripts
+      - name: Link Build Targets
+        run: |
+          # GitHub'daki çözüm: Hera klasörünü manuel oluşturup kütüphaneleri bağlıyoruz
+          mkdir -p node_modules/@fitbit/sdk-build-targets/hera
+          # Bu kısım Versa 4 için gereken temel yapı taşlarını kopyalar
+          # Eğer atlas kütüphanesi varsa onu baz alarak hera oluşturur
+          if [ -d "node_modules/@fitbit/sdk-build-targets/atlas" ]; then
+            cp -r node_modules/@fitbit/sdk-build-targets/atlas/* node_modules/@fitbit/sdk-build-targets/hera/
+          fi
       - name: Build
         run: npx fitbit-build
-      - name: Manipulate Manifest for Gallery
-        run: |
-          cd build
-          # .fba dosyasını aç
-          unzip *.fba -d tmp_fba
-          # Manifest dosyasında 'atlas' olan hedefi 'hera' olarak değiştiriyoruz
-          # Bu sayede Gallery dosyayı Versa 4 dosyası olarak görecek
-          sed -i 's/"atlas"/"hera"/g' tmp_fba/manifest.json
-          # Tekrar paketle
-          cd tmp_fba
-          zip -r ../Versa4_Final_App.fba .
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: Versa4-Son-Paket
-          path: build/Versa4_Final_App.fba
+          name: Versa4-Build
+          path: build/*.fba
