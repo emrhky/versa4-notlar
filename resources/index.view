@@ -1,0 +1,22 @@
+<svg>
+  <rect id="background" fill="black" x="0" y="0" width="100%" height="100%" />
+  
+  <use id="list" href="#tile-list">
+    <var id="reorder-enabled" value="0"/>
+    <var id="separator-height-bottom" value="2"/>
+
+    <use id="note-0" href="#tile-list-item" class="tile-list-item" display="none">
+      <use id="btn-0" href="#push-button" y="0" height="60" fill="fb-blue">
+        <set href="text" attributeName="text-buffer" to="Not 1" />
+      </use>
+    </use>
+    </use>
+
+  <rect id="detail-view" fill="black" x="0" y="0" width="100%" height="100%" display="none">
+    <text id="detail-title" x="50%" y="40" fill="fb-blue" font-size="30" text-anchor="middle" font-family="System-Bold" />
+    <textarea id="detail-text" x="5%" y="60" width="90%" height="200" fill="white" font-size="24" />
+    <use id="btn-back" href="#push-button" x="25%" y="260" width="50%" height="60" fill="fb-red">
+      <set href="text" attributeName="text-buffer" to="Geri Don" />
+    </use>
+  </rect>
+</svg>
