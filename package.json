@@ -12,15 +12,13 @@
       "access_internet"
     ],
     "buildTargets": [
-      "atlas",
-      "hera"
+      "atlas"
     ],
-    "sdkVersion": "6.0.0",
+    "sdkVersion": "5.0.0",
     "defaultLanguage": "en-US"
   },
   "devDependencies": {
-    "@fitbit/sdk": "~6.0.0",
-    "@fitbit/sdk-cli": "^1.7.3",
-    "@fitbit/sdk-build-targets": "1.2.1"
+    "@fitbit/sdk": "~5.0.0",
+    "@fitbit/sdk-cli": "^1.7.3"
   }
 }
