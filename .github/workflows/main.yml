@@ -11,14 +11,17 @@ jobs:
         with:
           node-version: '18'
           
-      - name: Install Fitbit SDK
+      - name: Install Fitbit Tools
         run: |
-          npm install --ignore-scripts
-          # Cihaz tanımlarını içeren paketi özellikle ekliyoruz
-          npm install @fitbit/sdk-build-targets @fitbit/sdk-cli @fitbit/sdk --save-dev --ignore-scripts
+          # Önce her şeyi temizle
+          rm -rf node_modules package-lock.json
+          # Sadece ana CLI ve SDK'yı kur
+          npm install @fitbit/sdk-cli @fitbit/sdk --save-dev --ignore-scripts
           
       - name: Build App
-        run: npx fitbit-build
+        run: |
+          # Derlemeyi direkt node üzerinden tetikle
+          ./node_modules/.bin/fitbit-build
         
       - name: Upload Result
         uses: actions/upload-artifact@v4
