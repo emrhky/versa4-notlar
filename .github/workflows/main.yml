@@ -8,18 +8,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          node-version: '18' # SDK 6.0 için en iyisi
       - name: Install
         run: |
           npm install --ignore-scripts
-          npm install @fitbit/sdk-cli --save-dev --ignore-scripts
+          # Paketleri tek tek ve zorlayarak kuruyoruz
+          npm install @fitbit/sdk-cli@1.7.3 --save-dev --ignore-scripts
+          npm install @fitbit/sdk-build-targets@1.2.1 --save-dev --ignore-scripts
       - name: Build
-        run: |
-          # HİLE: Hera paketini bulamazsa hata vermemesi için Atlas tanımını Hera'ya kopyalıyoruz
-          if [ -d "node_modules/@fitbit/sdk-build-targets" ]; then
-            cp -r node_modules/@fitbit/sdk-build-targets/atlas node_modules/@fitbit/sdk-build-targets/hera || true
-          fi
-          npx fitbit-build
+        run: npx fitbit-build
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
