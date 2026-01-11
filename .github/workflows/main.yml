@@ -1,4 +1,4 @@
-name: Fitbit Build SDK 6
+name: Fitbit SDK6 Build (Versa 4)
 on: [push]
 jobs:
   build:
@@ -13,10 +13,17 @@ jobs:
         run: |
           npm install --ignore-scripts
           npm install @fitbit/sdk-cli@1.7.3 --save-dev --ignore-scripts
+          
+          # İncelediğin repodaki çözüm: Eksik cihaz paketlerini indirip yerine koyuyoruz
+          mkdir -p node_modules/@fitbit/sdk-build-targets
+          git clone https://github.com/yeohongred/fitbit-versa4-sense2-sdk.git temp_sdk
+          cp -r temp_sdk/sdk-build-targets/* node_modules/@fitbit/sdk-build-targets/
+          rm -rf temp_sdk
+          
       - name: Build
         run: npx fitbit-build
-      - name: Upload Artifact
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: Versa4-SDK6-Paketi
+          name: Versa4-SDK6-Build
           path: build/*.fba
