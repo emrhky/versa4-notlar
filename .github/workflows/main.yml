@@ -15,16 +15,16 @@ jobs:
           npm install @fitbit/sdk-cli --save-dev --ignore-scripts
       - name: Build
         run: npx fitbit-build
-      - name: Patch for Versa 4
+      - name: Fix Manifest for Gallery
         run: |
           cd build
           unzip *.fba -d tmp_fba
-          # Daha agresif bir degisim yapalim
-          sed -i 's/atlas/hera/g' tmp_fba/manifest.json
+          # Sadece cihaz listesine 'hera' ekle ama yapılandırmayı bozma
+          sed -i 's/"atlas"/"atlas","hera"/g' tmp_fba/manifest.json
           cd tmp_fba
-          zip -r ../Versa4_Final.fba .
+          zip -r ../Final_App.fba .
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: Versa4-Son-Deneme
-          path: build/Versa4_Final.fba
+          name: Versa4-Hatasiz-Paket
+          path: build/Final_App.fba
