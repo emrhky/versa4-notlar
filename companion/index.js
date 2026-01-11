@@ -1,19 +1,22 @@
 import { settingsStorage } from "settings";
 import * as messaging from "messaging";
+import { me } from "companion";
 
-settingsStorage.onchange = () => {
-  let notesData = [];
-  for (let i = 0; i < 10; i++) {
-    let title = settingsStorage.getItem(`title_${i}`);
-    let content = settingsStorage.getItem(`content_${i}`);
-    if (title && content) {
-      notesData.push({
-        title: JSON.parse(title).name || "Basliksiz",
-        content: JSON.parse(content).name || ""
-      });
+// Ayarlar değiştiğinde saate gönder
+settingsStorage.onchange = (evt) => {
+  sendData();
+};
+
+function sendData() {
+  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+    const notesData = settingsStorage.getItem("notes");
+    if (notesData) {
+      messaging.peerSocket.send(JSON.parse(notesData));
     }
   }
-  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    messaging.peerSocket.send(notesData);
-  }
+}
+
+// Bağlantı kurulduğunda veriyi gönder
+messaging.peerSocket.onopen = () => {
+  sendData();
 };
