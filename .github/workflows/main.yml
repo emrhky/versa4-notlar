@@ -15,16 +15,19 @@ jobs:
           npm install @fitbit/sdk-cli --save-dev --ignore-scripts
       - name: Build
         run: npx fitbit-build
-      - name: Fix Manifest for Gallery
+      - name: Manipulate Manifest for Gallery
         run: |
           cd build
+          # .fba dosyasını aç
           unzip *.fba -d tmp_fba
-          # Sadece cihaz listesine 'hera' ekle ama yapılandırmayı bozma
-          sed -i 's/"atlas"/"atlas","hera"/g' tmp_fba/manifest.json
+          # Manifest dosyasında 'atlas' olan hedefi 'hera' olarak değiştiriyoruz
+          # Bu sayede Gallery dosyayı Versa 4 dosyası olarak görecek
+          sed -i 's/"atlas"/"hera"/g' tmp_fba/manifest.json
+          # Tekrar paketle
           cd tmp_fba
-          zip -r ../Final_App.fba .
+          zip -r ../Versa4_Final_App.fba .
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: Versa4-Hatasiz-Paket
-          path: build/Final_App.fba
+          name: Versa4-Son-Paket
+          path: build/Versa4_Final_App.fba
