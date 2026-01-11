@@ -1,18 +1,15 @@
 <svg>
-  <link rel="import" href="widgets.gui" /> 
-  
+  <link rel="import" href="widgets.gui" />
   <rect id="background" fill="black" x="0" y="0" width="100%" height="100%" />
   
-  <use id="btn-0" href="#push-button" y="5" height="50" fill="fb-blue" display="none" />
-  <use id="btn-1" href="#push-button" y="55" height="50" fill="fb-blue" display="none" />
-  <use id="btn-2" href="#push-button" y="105" height="50" fill="fb-blue" display="none" />
-  <use id="btn-3" href="#push-button" y="155" height="50" fill="fb-blue" display="none" />
-  <use id="btn-4" href="#push-button" y="205" height="50" fill="fb-blue" display="none" />
-
+  <use id="btn-0" href="#push-button" y="5" height="60" fill="fb-blue" display="none" />
+  <use id="btn-1" href="#push-button" y="70" height="60" fill="fb-blue" display="none" />
+  <use id="btn-2" href="#push-button" y="135" height="60" fill="fb-blue" display="none" />
+  
   <rect id="detail-view" fill="black" x="0" y="0" width="100%" height="100%" display="none">
     <text id="detail-title" x="50%" y="40" fill="fb-blue" font-size="30" text-anchor="middle" text-length="32" />
-    <textarea id="detail-text" x="5%" y="60" width="90%" height="140" fill="white" font-size="22" text-length="256" />
-    <use id="btn-back" href="#push-button" x="10%" y="220" width="80%" height="50" fill="fb-red">
+    <textarea id="detail-text" x="5%" y="60" width="90%" height="160" fill="white" font-size="24" text-length="256" />
+    <use id="btn-back" href="#push-button" x="10%" y="240" width="80%" height="60" fill="fb-red">
       <set href="text" attributeName="text-buffer" to="Geri Don" />
     </use>
   </rect>
