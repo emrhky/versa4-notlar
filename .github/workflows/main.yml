@@ -1,0 +1,27 @@
+name: Fitbit Build
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18' # Daha yeni ve uyumlu sürüm
+          
+      - name: Install Fitbit SDK
+        run: |
+          npm install --ignore-scripts
+          # Hata veren paketi tekil kurmak yerine tüm CLI'ı yerel olarak kuruyoruz
+          npm install @fitbit/sdk-cli @fitbit/sdk --save-dev --ignore-scripts
+          
+      - name: Build App
+        run: npx fitbit-build
+        
+      - name: Upload Result
+        uses: actions/upload-artifact@v4
+        with:
+          name: Versa4-Not-Uygulamasi
+          path: build/*.fba
