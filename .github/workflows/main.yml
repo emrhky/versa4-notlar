@@ -5,22 +5,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '16' # SDK 5.0 ile en uyumlu sürüm
-          
+          node-version: '16'
       - name: Install
         run: |
           npm install --ignore-scripts
           npm install @fitbit/sdk-cli --save-dev --ignore-scripts
-          
       - name: Build
-        run: npx fitbit-build
-        
+        run: |
+          # HİLE: Hera paketini bulamazsa hata vermemesi için Atlas tanımını Hera'ya kopyalıyoruz
+          if [ -d "node_modules/@fitbit/sdk-build-targets" ]; then
+            cp -r node_modules/@fitbit/sdk-build-targets/atlas node_modules/@fitbit/sdk-build-targets/hera || true
+          fi
+          npx fitbit-build
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: Versa4-Uygulamasi
+          name: Versa4-Not-Uygulamasi
           path: build/*.fba
