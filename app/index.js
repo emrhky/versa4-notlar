@@ -9,36 +9,33 @@ const btnBack = document.getElementById("btn-back");
 
 let notes = [];
 
-// Kayıtlı notları oku
-try {
-  notes = fs.readFileSync("notes.json", "json") || [];
-} catch (e) {
-  notes = [];
-}
-
-function updateUI() {
-  for (let i = 0; i < 10; i++) {
-    let item = document.getElementById(`note-${i}`);
-    let btn = document.getElementById(`btn-${i}`);
-    
-    // Eğer XML'de bu slot varsa işlem yap
-    if (item && btn) {
-      if (notes[i]) {
-        item.style.display = "inline";
-        btn.text = notes[i].title;
-        btn.onclick = () => showDetail(i);
-      } else {
-        item.style.display = "none";
-      }
+// Dosyadan notları yükle
+function loadNotes() {
+  try {
+    if (fs.existsSync("notes.json")) {
+      notes = fs.readFileSync("notes.json", "json");
     }
+  } catch (e) {
+    notes = [];
   }
 }
 
-function showDetail(index) {
-  if (notes[index]) {
-    detailTitle.text = notes[index].title;
-    detailText.text = notes[index].content;
-    detailView.style.display = "inline";
+function updateUI() {
+  for (let i = 0; i < 4; i++) { // Kaç buton yaptıysan o kadar (şu an 4)
+    let btn = document.getElementById(`btn-${i}`);
+    if (btn) {
+      if (notes && notes[i]) {
+        btn.style.display = "inline";
+        btn.text = notes[i].title || "Basliksiz";
+        btn.onclick = () => {
+          detailTitle.text = notes[i].title;
+          detailText.text = notes[i].content;
+          detailView.style.display = "inline";
+        };
+      } else {
+        btn.style.display = "none";
+      }
+    }
   }
 }
 
@@ -46,7 +43,7 @@ btnBack.onclick = () => {
   detailView.style.display = "none";
 };
 
-// Telefondan mesaj geldiğinde
+// Telefon bağlantısı
 messaging.peerSocket.onmessage = (evt) => {
   notes = evt.data;
   try {
@@ -55,5 +52,6 @@ messaging.peerSocket.onmessage = (evt) => {
   updateUI();
 };
 
-// Açılışta çalıştır
+// Başlangıç
+loadNotes();
 updateUI();
