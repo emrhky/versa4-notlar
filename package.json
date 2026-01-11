@@ -1,11 +1,16 @@
 {
-  "name": "bilek-notlari-v4",
-  "version": "1.6.0",
+  "name": "notlar-v4-gercek",
+  "version": "1.0.0",
   "private": true,
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@fitbit/sdk": "~6.2.0-pre.1",
+    "@fitbit/sdk-cli": "~1.8.0-pre.10"
+  },
   "fitbit": {
     "appUUID": "a1b2c3d4-e5f6-4a3b-8c2d-1e2f3a4b5c6d",
     "appType": "app",
-    "appDisplayName": "Notlarim",
+    "appDisplayName": "Not Defterim",
     "iconFile": "resources/icon.png",
     "wipeColor": "#000000",
     "requestedPermissions": [
@@ -14,11 +19,9 @@
     "buildTargets": [
       "hera"
     ],
-    "sdkVersion": "6.0.0",
     "defaultLanguage": "en-US"
   },
-  "devDependencies": {
-    "@fitbit/sdk": "~6.0.0",
-    "@fitbit/sdk-cli": "^1.7.3"
+  "scripts": {
+    "build": "fitbit-build"
   }
 }
