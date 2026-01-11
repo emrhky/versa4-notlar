@@ -1,18 +1,19 @@
 {
-  "name": "bilek-notlari",
-  "version": "1.0.5",
+  "name": "not-defterim",
+  "version": "1.1.0",
   "private": true,
   "fitbit": {
-    "appUUID": "e5f2a1b3-6789-4c2d-9e8f-7a6b5c4d3e2f",
+    "appUUID": "a1b2c3d4-e5f6-4a3b-8c2d-1e2f3a4b5c6d",
     "appType": "app",
-    "appDisplayName": "Notlarim",
+    "appDisplayName": "Bilek Notlari",
     "iconFile": "resources/icon.png",
     "wipeColor": "#000000",
     "requestedPermissions": [
       "access_internet"
     ],
     "buildTargets": [
-      "atlas"
+      "atlas",
+      "hera"
     ],
     "sdkVersion": "5.0.0",
     "defaultLanguage": "en-US"
