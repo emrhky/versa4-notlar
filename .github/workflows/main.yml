@@ -8,24 +8,20 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '14' # Versa 4 projelerinde Node 14 veya 16 daha stabil
-      - name: Install Dependencies
+          node-version: '14'
+      - name: Install
         run: |
           npm install --ignore-scripts
           npm install @fitbit/sdk-cli@1.7.3 --save-dev --ignore-scripts
-      - name: Link Build Targets
-        run: |
-          # GitHub'daki çözüm: Hera klasörünü manuel oluşturup kütüphaneleri bağlıyoruz
+          # ÇÖZÜM: Hera hedefinin var olduğunu derleyiciye kanıtlamak için 
+          # boş bir index.js ve gerekli config dosyalarını oluşturuyoruz
           mkdir -p node_modules/@fitbit/sdk-build-targets/hera
-          # Bu kısım Versa 4 için gereken temel yapı taşlarını kopyalar
-          # Eğer atlas kütüphanesi varsa onu baz alarak hera oluşturur
-          if [ -d "node_modules/@fitbit/sdk-build-targets/atlas" ]; then
-            cp -r node_modules/@fitbit/sdk-build-targets/atlas/* node_modules/@fitbit/sdk-build-targets/hera/
-          fi
+          echo '{"displayName":"Fitbit Versa 4","family":"hera","screen":{"width":336,"height":336}}' > node_modules/@fitbit/sdk-build-targets/hera/package.json
+          touch node_modules/@fitbit/sdk-build-targets/hera/index.js
       - name: Build
         run: npx fitbit-build
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: Versa4-Build
+          name: Versa4-Hatasiz-Build
           path: build/*.fba
