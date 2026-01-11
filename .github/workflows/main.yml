@@ -1,43 +1,21 @@
-name: Fitbit SDK6 Build (Versa 4)
+name: Fitbit Build SDK 6.2
 on: [push]
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '14'
-
-      - name: Install Dependencies
+          node-version: '16' # SDK 6.2 için Node 16 daha iyidir
+      - name: Install
         run: |
-          # 1. Standart bağımlılıkları yükle
-          npm install --ignore-scripts
-          npm install @fitbit/sdk-cli@1.7.3 --save-dev --ignore-scripts
-          
-          # 2. SDK Build Targets klasörünü oluştur
-          mkdir -p node_modules/@fitbit/sdk-build-targets
-          
-          # 3. Özel SDK paketlerini klonla
-          git clone https://github.com/yeohongred/fitbit-versa4-sense2-sdk.git temp_sdk
-          
-          # 4. Hera (Versa 4) ve Atlas2 (Sense 2) paketlerini doğru yere kopyala
-          # Repo yapısında klasörler doğrudan ana dizinde yer alıyor
-          cp -r temp_sdk/hera node_modules/@fitbit/sdk-build-targets/
-          cp -r temp_sdk/atlas2 node_modules/@fitbit/sdk-build-targets/
-          
-          # 5. Geçici klasörü temizle
-          rm -rf temp_sdk
-
-      - name: Build App
+          npm install --ignore-scripts --legacy-peer-deps
+      - name: Build
         run: npx fitbit-build
-
-      - name: Upload Artifact
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: Versa4-Hera-Paketi
+          name: Versa4-Gercek-Build
           path: build/*.fba
