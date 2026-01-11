@@ -9,13 +9,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18' # Daha yeni ve uyumlu sürüm
+          node-version: '18'
           
       - name: Install Fitbit SDK
         run: |
           npm install --ignore-scripts
-          # Hata veren paketi tekil kurmak yerine tüm CLI'ı yerel olarak kuruyoruz
-          npm install @fitbit/sdk-cli @fitbit/sdk --save-dev --ignore-scripts
+          # Cihaz tanımlarını içeren paketi özellikle ekliyoruz
+          npm install @fitbit/sdk-build-targets @fitbit/sdk-cli @fitbit/sdk --save-dev --ignore-scripts
           
       - name: Build App
         run: npx fitbit-build
