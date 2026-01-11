@@ -1,21 +1,24 @@
 <svg>
   <rect id="background" fill="black" x="0" y="0" width="100%" height="100%" />
   
-  <scroll-view pointer-events="all" x="0" y="0" width="100%" height="100%">
-    <use id="note-0" href="#push-button" y="10" height="60" fill="fb-blue" display="none">
+  <scroll-view id="main-screen" pointer-events="all" x="0" y="0" width="100%" height="100%">
+    <use id="btn-0" href="#push-button" y="10" height="70" fill="fb-blue" display="none">
       <set href="text" attributeName="text-buffer" to="Not 1" />
     </use>
-    <use id="note-1" href="#push-button" y="80" height="60" fill="fb-blue" display="none">
+    <use id="btn-1" href="#push-button" y="90" height="70" fill="fb-blue" display="none">
       <set href="text" attributeName="text-buffer" to="Not 2" />
     </use>
-    <use id="note-2" href="#push-button" y="150" height="60" fill="fb-blue" display="none">
+    <use id="btn-2" href="#push-button" y="170" height="70" fill="fb-blue" display="none">
       <set href="text" attributeName="text-buffer" to="Not 3" />
+    </use>
+    <use id="btn-3" href="#push-button" y="250" height="70" fill="fb-blue" display="none">
+      <set href="text" attributeName="text-buffer" to="Not 4" />
     </use>
     </scroll-view>
 
   <rect id="detail-view" fill="black" x="0" y="0" width="100%" height="100%" display="none">
-    <text id="detail-title" x="50%" y="45" fill="fb-blue" font-size="35" text-anchor="middle" font-family="System-Bold" text-length="20" />
-    <textarea id="detail-text" x="5%" y="60" width="90%" height="180" fill="white" font-size="25" text-length="200" />
+    <text id="detail-title" x="50%" y="40" fill="fb-blue" font-size="30" text-anchor="middle" font-family="System-Bold" text-length="32" />
+    <textarea id="detail-text" x="5%" y="60" width="90%" height="180" fill="white" font-size="24" text-length="256" />
     <use id="btn-back" href="#push-button" x="10%" y="250" width="80%" height="60" fill="fb-red">
       <set href="text" attributeName="text-buffer" to="Geri Don" />
     </use>
