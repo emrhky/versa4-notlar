@@ -5,7 +5,7 @@
   "fitbit": {
     "appUUID": "a1b2c3d4-e5f6-4a3b-8c2d-1e2f3a4b5c6d",
     "appType": "app",
-    "appDisplayName": "Bilek Notlarım",
+    "appDisplayName": "Bilek Notlarim",
     "iconFile": "resources/icon.png",
     "wipeColor": "#2196f3",
     "requestedPermissions": [
@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@fitbit/sdk": "~6.0.0",
-    "@fitbit/sdk-cli": "^1.7.3"
+    "@fitbit/sdk-cli": "^1.7.3",
+    "@fitbit/sdk-build-targets": "^1.2.1"
   }
 }
