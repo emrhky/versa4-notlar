@@ -1,33 +1,20 @@
 import document from "document";
 import * as messaging from "messaging";
 
-const detailView = document.getElementById("detail-view");
-const detailTitle = document.getElementById("detail-title");
-const detailText = document.getElementById("detail-text");
-const btnBack = document.getElementById("btn-back");
+const txt0 = document.getElementById("text-0");
 
-let notes = [];
-
-function updateUI() {
-  for (let i = 0; i < 2; i++) {
-    let rct = document.getElementById("rect-" + i);
-    let txt = document.getElementById("text-" + i);
-    if (notes[i] && rct && txt) {
-      txt.text = notes[i].title || "Not " + (i+1);
-      rct.onclick = () => {
-        detailTitle.text = notes[i].title || "";
-        detailText.text = notes[i].content || "";
-        detailView.style.display = "inline";
-      };
-    }
-  }
-}
-
-messaging.peerSocket.onmessage = (evt) => {
-  notes = evt.data;
-  updateUI();
+// Saat tarafında baglantı acıldı mı?
+messaging.peerSocket.onopen = () => {
+  txt0.text = "Baglanti Kuruldu...";
 };
 
-if (btnBack) {
-  btnBack.onclick = () => { detailView.style.display = "none"; };
-}
+// Veri geldiginde
+messaging.peerSocket.onmessage = (evt) => {
+  if (evt.data && evt.data[0]) {
+    txt0.text = evt.data[0].title; // Sadece ilk notun baslıgı
+  }
+};
+
+messaging.peerSocket.onerror = (err) => {
+  txt0.text = "Hata: " + err.code;
+};
