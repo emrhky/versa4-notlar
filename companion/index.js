@@ -6,7 +6,12 @@ function sendData() {
     const data = settingsStorage.getItem("notes_list");
     if (data) {
       const raw = JSON.parse(data);
-      const clean = raw.map(item => (typeof item === 'object' ? item.name : item));
+      // Hem ismi hem içeriği paketliyoruz
+      const clean = raw.map(item => ({
+        title: item.name || "Başlıksız",
+        // Eğer içerik için ayrı alan yoksa name'i kullan, varsa ek alanı kullan
+        content: item.value || item.name 
+      }));
       messaging.peerSocket.send(clean);
     }
   }
