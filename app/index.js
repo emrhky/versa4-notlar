@@ -7,7 +7,6 @@ const btnBack = document.getElementById("btn-back");
 let notes = [];
 
 const rows = [];
-// Sayıyı 5'e çıkardık
 for (let i = 0; i < 5; i++) {
   rows.push({
     group: document.getElementById(`group-${i}`),
@@ -27,7 +26,9 @@ function render() {
       row.group.style.display = "inline";
       row.rect.onclick = () => {
         let content = typeof notes[i] === 'object' ? notes[i].name : notes[i];
-        detailTitle.text = String(content);
+        
+        // Textarea içeriğini String olarak güvenli bir boyutta atıyoruz
+        detailTitle.text = String(content).substring(0, 300); 
         detailView.style.display = "inline";
       };
     } else {
