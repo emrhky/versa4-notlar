@@ -1,24 +1,48 @@
+import document from "document";
+import * as messaging from "messaging";
+
+const detailView = document.getElementById("detail-view");
+const detailTitle = document.getElementById("detail-title");
+const btnBack = document.getElementById("btn-back");
+let notes = [];
+
+const rows = [];
+for (let i = 0; i < 4; i++) {
+  rows.push({
+    rect: document.getElementById("rect-" + i),
+    txt: document.getElementById("text-" + i)
+  });
+}
+
 messaging.peerSocket.onmessage = (evt) => {
-  // Eğer veri newValue içindeyse (bazı SDK sürümlerinde böyle gelir) onu al, yoksa direkt datayı al
-  notes = evt.data.newValue ? JSON.parse(evt.data.newValue) : evt.data;
-  render();
+  if (evt.data) {
+    notes = evt.data;
+    render();
+  }
 };
 
 function render() {
   rows.forEach((row, i) => {
-    if (notes && notes[i]) {
-      // Gelen verinin tipini kontrol et ve metne çevir
-      let content = typeof notes[i] === 'object' ? notes[i].name : notes[i];
+    if (notes[i]) {
+      // Gelen veriyi string'e çevir
+      let fullText = String(notes[i]);
       
-      row.txt.text = String(content).substring(0, 20);
+      // Gri şeritte ilk 15 karakteri göster (Başlık niyetine)
+      row.txt.text = fullText.substring(0, 15) + "...";
       row.rect.style.display = "inline";
       
       row.rect.onclick = () => {
-        detailTitle.text = String(content);
+        // Detayda tüm metni göster
+        detailTitle.text = fullText;
         detailView.style.display = "inline";
       };
     } else {
       row.rect.style.display = "none";
+      row.txt.text = "";
     }
   });
 }
+
+btnBack.onclick = () => {
+  detailView.style.display = "none";
+};
