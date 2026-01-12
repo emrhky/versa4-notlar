@@ -6,14 +6,11 @@ registerSettingsPage((props) => (
         maxItems="10"
         addAction={
           <TextInput
-            label="Not Başlığı ve İçeriği"
-            placeholder="Notunuzu buraya yazın..."
+            label="Not Ekle (Başlık | Not şeklinde)"
+            placeholder="Örn: Market | Süt ve ekmek al"
           />
         }
       />
-    </Section>
-    <Section title="Bilgi">
-      <Text>Not eklemek için yukarıdaki '+' butonuna basın. Eklediğiniz notun üzerine tıklayarak içeriği düzenleyebilirsiniz.</Text>
     </Section>
   </Page>
 ));
