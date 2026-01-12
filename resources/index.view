@@ -1,18 +1,62 @@
 <svg>
+  <!-- Background -->
   <rect x="0" y="0" width="100%" height="100%" fill="black" />
-  
+
+  <!-- LIST ITEMS -->
   <rect id="rect-0" x="5%" y="10" width="90%" height="50" fill="#333333" pointer-events="all" display="none" />
   <rect id="rect-1" x="5%" y="65" width="90%" height="50" fill="#333333" pointer-events="all" display="none" />
   <rect id="rect-2" x="5%" y="120" width="90%" height="50" fill="#333333" pointer-events="all" display="none" />
 
-  <text id="text-0" x="50%" y="45" fill="#ffffff" font-size="28" font-family="System-Regular" text-anchor="middle" pointer-events="none" />
-  <text id="text-1" x="50%" y="100" fill="#ffffff" font-size="28" font-family="System-Regular" text-anchor="middle" pointer-events="none" />
-  <text id="text-2" x="50%" y="155" fill="#ffffff" font-size="28" font-family="System-Regular" text-anchor="middle" pointer-events="none" />
+  <text id="text-0"
+        x="50%" y="45"
+        fill="#ffffff"
+        font-size="28"
+        font-family="System-Regular"
+        text-anchor="middle"
+        pointer-events="none" />
 
-  <rect id="detail-view" x="0" y="0" width="100%" height="100%" fill="black" display="none">
-    <text id="detail-title" x="50%" y="100" fill="#00ffff" font-size="32" font-family="System-Bold" text-anchor="middle" />
-    
-    <rect id="btn-back" x="10%" y="220" width="80%" height="60" fill="#ff0000" pointer-events="all" />
-    <text x="50%" y="260" fill="#ffffff" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none">GERI DON</text>
-  </rect>
+  <text id="text-1"
+        x="50%" y="100"
+        fill="#ffffff"
+        font-size="28"
+        font-family="System-Regular"
+        text-anchor="middle"
+        pointer-events="none" />
+
+  <text id="text-2"
+        x="50%" y="155"
+        fill="#ffffff"
+        font-size="28"
+        font-family="System-Regular"
+        text-anchor="middle"
+        pointer-events="none" />
+
+  <!-- DETAIL VIEW GROUP (IMPORTANT: Must be <g>, not <rect>) -->
+  <g id="detail-view" display="none">
+    <!-- Background -->
+    <rect x="0" y="0" width="100%" height="100%" fill="black" />
+
+    <!-- Title -->
+    <text id="detail-title"
+          x="50%" y="100"
+          fill="#00ffff"
+          font-size="32"
+          font-family="System-Bold"
+          text-anchor="middle" />
+
+    <!-- Back button -->
+    <rect id="btn-back"
+          x="10%" y="220"
+          width="80%" height="60"
+          fill="#ff0000"
+          pointer-events="all" />
+
+    <!-- Back text -->
+    <text x="50%" y="260"
+          fill="#ffffff"
+          font-size="30"
+          font-family="System-Regular"
+          text-anchor="middle"
+          pointer-events="none">GERI DON</text>
+  </g>
 </svg>
