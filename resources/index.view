@@ -12,7 +12,7 @@
   <text id="text-3" x="50%" y="210" fill="#ffffff" font-size="28" font-family="System-Regular" text-anchor="middle" pointer-events="none" />
 
   <rect id="detail-view" x="0" y="0" width="100%" height="100%" fill="black" display="none">
-    <text id="detail-title" x="50%" y="100" fill="#00ffff" font-size="32" font-family="System-Bold" text-anchor="middle" text-length="128" />
+    <text id="detail-title" x="5%" y="80" fill="#00ffff" font-size="24" font-family="System-Regular" text-length="256" />
     
     <rect id="btn-back" x="10%" y="220" width="80%" height="60" fill="#ff0000" pointer-events="all" />
     <text x="50%" y="260" fill="#ffffff" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none">GERI DON</text>
