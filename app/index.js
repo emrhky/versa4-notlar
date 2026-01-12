@@ -6,32 +6,27 @@ const detailTitle = document.getElementById("detail-title");
 const btnBack = document.getElementById("btn-back");
 let notes = [];
 
-const rows = [];
-for (let i = 0; i < 4; i++) {
-  rows.push({
-    rect: document.getElementById("rect-" + i),
-    txt: document.getElementById("text-" + i)
-  });
-}
+const rows = [
+  { rect: document.getElementById("rect-0"), txt: document.getElementById("text-0") },
+  { rect: document.getElementById("rect-1"), txt: document.getElementById("text-1") },
+  { rect: document.getElementById("rect-2"), txt: document.getElementById("text-2") }
+];
 
 messaging.peerSocket.onmessage = (evt) => {
-  if (evt.data) {
-    notes = evt.data;
-    render();
-  }
+  notes = evt.data;
+  render();
 };
 
 function render() {
   rows.forEach((row, i) => {
-    if (notes[i]) {
-      // Listeye 1-2-3-4 yazdırıyoruz (Garantili görünürlük)
-      row.txt.text = "NOT " + (i + 1);
+    if (notes && notes[i]) {
+      let content = typeof notes[i] === 'object' ? notes[i].name : notes[i];
+      // "Geri Dön" yazısı gibi net görünecek
+      row.txt.text = "NOT " + (i + 1); 
       row.rect.style.display = "inline";
       
       row.rect.onclick = () => {
-        // Detay ekranına içeriği basıyoruz
-        let content = typeof notes[i] === 'object' ? notes[i].name : notes[i];
-        detailTitle.text = String(content).substring(0, 120); 
+        detailTitle.text = String(content).substring(0, 100);
         detailView.style.display = "inline";
       };
     } else {
@@ -41,6 +36,4 @@ function render() {
   });
 }
 
-btnBack.onclick = () => {
-  detailView.style.display = "none";
-};
+btnBack.onclick = () => { detailView.style.display = "none"; };
