@@ -1,45 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg">
-  <style>
-    text {
-      font-family: System-Regular;
-    }
-  </style>
-
-  <!-- 3 adet satır -->
-  <rect id="rect-0" x="0" y="0" width="100%" height="33%" fill="#333333"/>
-  <text id="text-0" x="10" y="30" font-size="24" fill="white">—</text>
-
-  <rect id="rect-1" x="0" y="33%" width="100%" height="33%" fill="#444444"/>
-  <text id="text-1" x="10" y="30+33%" font-size="24" fill="white">—</text>
-
-  <rect id="rect-2" x="0" y="66%" width="100%" height="33%" fill="#555555"/>
-  <text id="text-2" x="10" y="30+66%" font-size="24" fill="white">—</text>
-
-  <!-- Detay sayfası -->
-  <g id="detail-view" display="none">
-    <rect x="0" y="0" width="100%" height="100%" fill="black"/>
-
-    <text id="detail-title"
-          x="10"
-          y="40"
-          font-size="24"
-          fill="white"
-          width="100%-20">
-    </text>
-
-    <rect id="btn-back"
-          x="0"
-          y="90%"
-          width="100%"
-          height="10%"
-          fill="#222222"/>
-
-    <text x="10"
-          y="96%"
-          font-size="22"
-          fill="white">
-      Geri
-    </text>
-  </g>
-
+  <rect x="0" y="0" width="100%" height="100%" fill="red"/>
+  <text x="10" y="40" font-size="30" fill="white">TEST</text>
 </svg>
