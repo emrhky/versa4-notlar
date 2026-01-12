@@ -16,18 +16,20 @@ for (let i = 0; i < 4; i++) {
 }
 
 messaging.peerSocket.onmessage = (evt) => {
-  notes = evt.data; // Artık [{title: '...', content: '...'}] geliyor
-  render();
+  if (evt.data) {
+    notes = evt.data;
+    render();
+  }
 };
 
 function render() {
   rows.forEach((row, i) => {
     if (notes[i]) {
-      row.txt.text = notes[i].title.substring(0, 20);
+      row.txt.text = String(notes[i].title); // Listede başlığı göster
       row.rect.style.display = "inline";
       row.rect.onclick = () => {
-        detailTitle.text = notes[i].title;
-        detailText.text = notes[i].content; // Uzun metin buraya
+        detailTitle.text = String(notes[i].title);
+        detailText.text = String(notes[i].content); // Detayda içeriği göster
         detailView.style.display = "inline";
       };
     } else {
