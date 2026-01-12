@@ -3,6 +3,7 @@ import * as messaging from "messaging";
 
 const detailView = document.getElementById("detail-view");
 const detailTitle = document.getElementById("detail-title");
+const detailText = document.getElementById("detail-text");
 const btnBack = document.getElementById("btn-back");
 let notes = [];
 
@@ -15,29 +16,24 @@ for (let i = 0; i < 4; i++) {
 }
 
 messaging.peerSocket.onmessage = (evt) => {
-  notes = evt.data;
+  notes = evt.data; // Artık [{title: '...', content: '...'}] geliyor
   render();
 };
 
 function render() {
   rows.forEach((row, i) => {
     if (notes[i]) {
-      // Metni String'e zorla ve ata
-      let content = String(notes[i]);
-      row.txt.text = content.substring(0, 20);
+      row.txt.text = notes[i].title.substring(0, 20);
       row.rect.style.display = "inline";
-      
       row.rect.onclick = () => {
-        detailTitle.text = content;
+        detailTitle.text = notes[i].title;
+        detailText.text = notes[i].content; // Uzun metin buraya
         detailView.style.display = "inline";
       };
     } else {
       row.rect.style.display = "none";
-      row.txt.text = ""; // Eski metni temizle
     }
   });
 }
 
-btnBack.onclick = () => {
-  detailView.style.display = "none";
-};
+btnBack.onclick = () => { detailView.style.display = "none"; };
