@@ -9,24 +9,25 @@ let notes = [];
 const rows = [];
 for (let i = 0; i < 4; i++) {
   rows.push({
-    rect: document.getElementById("rect-" + i),
-    txt: document.getElementById("text-" + i)
+    rect: document.getElementById(`rect-${i}`),
+    txt: document.getElementById(`text-${i}`)
   });
 }
 
 messaging.peerSocket.onmessage = (evt) => {
-  if (evt.data) {
-    notes = evt.data;
-    render();
-  }
+  notes = evt.data;
+  render();
 };
 
 function render() {
   rows.forEach((row, i) => {
     if (notes && notes[i]) {
-      // Listede sabit "NOT 1" vb. yazdırıyoruz
-      row.txt.text = "NOT " + (i + 1);
+      // Metni ve kutuyu görünür yap
       row.rect.style.display = "inline";
+      row.txt.style.display = "inline";
+      
+      // İçeriği ata
+      row.txt.text = "NOT " + (i + 1);
       
       row.rect.onclick = () => {
         let content = typeof notes[i] === 'object' ? notes[i].name : notes[i];
@@ -35,6 +36,7 @@ function render() {
       };
     } else {
       row.rect.style.display = "none";
+      row.txt.style.display = "none";
       row.txt.text = "";
     }
   });
