@@ -7,11 +7,10 @@ function sendData() {
     if (data) {
       try {
         const raw = JSON.parse(data);
-        // Sadece metinleri gönder
         const clean = raw.map(item => (typeof item === 'object' ? item.name : item));
         messaging.peerSocket.send(clean);
       } catch(e) {
-        console.log("Hata");
+        console.log("Hata oluştu");
       }
     }
   }
