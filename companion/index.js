@@ -7,18 +7,11 @@ function sendData() {
     if (data) {
       try {
         const raw = JSON.parse(data);
-        const clean = raw.map(item => {
-          let fullText = typeof item === 'object' ? item.name : item;
-          // Metni | işaretinden ikiye bölüyoruz
-          let parts = fullText.split('|');
-          return {
-            title: parts[0] ? parts[0].trim() : "Başlıksız",
-            content: parts[1] ? parts[1].trim() : fullText.trim()
-          };
-        });
+        // Sadece metinleri gönder
+        const clean = raw.map(item => (typeof item === 'object' ? item.name : item));
         messaging.peerSocket.send(clean);
       } catch(e) {
-        console.log("Veri paketleme hatası");
+        console.log("Hata");
       }
     }
   }
