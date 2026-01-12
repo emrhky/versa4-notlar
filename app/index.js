@@ -26,12 +26,10 @@ function render() {
   rows.forEach((row, i) => {
     if (notes && notes[i]) {
       row.group.style.display = "inline";
-      
-      // ARTIK BURADA "NOT 1" YERİNE BAŞLIK YAZIYOR
+      // Metni direkt atıyoruz, kısıtlama yok
       row.txt.text = String(notes[i].title);
       
       row.rect.onclick = () => {
-        // DETAYDA İSE İÇERİK
         detailTitle.text = String(notes[i].content);
         detailView.style.display = "inline";
       };
