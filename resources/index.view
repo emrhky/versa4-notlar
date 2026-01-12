@@ -12,7 +12,7 @@
   <text id="text-3" x="50%" y="210" fill="white" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none" />
 
   <rect id="detail-view" x="0" y="0" width="100%" height="100%" fill="black" display="none">
-    <textarea id="detail-title" x="5%" y="20" width="90%" height="180" fill="cyan" font-size="26" font-family="System-Regular" />
+    <text id="detail-title" x="50%" y="100" fill="cyan" font-size="28" font-family="System-Regular" text-anchor="middle" text-length="128" />
     
     <rect id="btn-back" x="10%" y="220" width="80%" height="60" fill="fb-red" pointer-events="all" />
     <text x="50%" y="260" fill="white" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none">GERI DON</text>
