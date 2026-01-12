@@ -7,7 +7,6 @@ const btnBack = document.getElementById("btn-back");
 let notes = [];
 
 const rows = [];
-// Sayıyı 5'e çıkardık
 for (let i = 0; i < 5; i++) {
   rows.push({
     group: document.getElementById(`group-${i}`),
@@ -17,17 +16,23 @@ for (let i = 0; i < 5; i++) {
 }
 
 messaging.peerSocket.onmessage = (evt) => {
-  notes = evt.data;
-  render();
+  if (evt.data) {
+    notes = evt.data;
+    render();
+  }
 };
 
 function render() {
   rows.forEach((row, i) => {
     if (notes && notes[i]) {
       row.group.style.display = "inline";
+      
+      // ARTIK BURADA "NOT 1" YERİNE BAŞLIK YAZIYOR
+      row.txt.text = String(notes[i].title);
+      
       row.rect.onclick = () => {
-        let content = typeof notes[i] === 'object' ? notes[i].name : notes[i];
-        detailTitle.text = String(content);
+        // DETAYDA İSE İÇERİK
+        detailTitle.text = String(notes[i].content);
         detailView.style.display = "inline";
       };
     } else {
