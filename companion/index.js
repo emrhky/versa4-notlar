@@ -11,13 +11,13 @@ function sendData() {
           let fullText = typeof item === 'object' ? item.name : item;
           let parts = fullText.split('|');
           return {
-            title: parts[0] ? parts[0].trim().substring(0, 15) : "Başlıksız",
+            title: parts[0] ? parts[0].trim().substring(0, 20) : "Başlıksız",
             content: parts[1] ? parts[1].trim() : fullText.trim()
           };
         });
         messaging.peerSocket.send(clean);
       } catch(e) {
-        console.log("Dönüştürme hatası");
+        console.log("Error");
       }
     }
   }
