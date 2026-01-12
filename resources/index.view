@@ -21,9 +21,13 @@
     <text id="text-3" x="50%" y="210" fill="#ffffff" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none">NOT 4</text>
   </g>
 
+  <g id="group-4" display="none">
+    <rect id="rect-4" x="5%" y="230" width="90%" height="50" fill="#333333" pointer-events="all" />
+    <text id="text-4" x="50%" y="265" fill="#ffffff" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none">NOT 5</text>
+  </g>
+
   <rect id="detail-view" x="0" y="0" width="100%" height="100%" fill="black" display="none">
     <text id="detail-title" x="50%" y="100" fill="#00ffff" font-size="28" font-family="System-Regular" text-anchor="middle" text-length="128" />
-    
     <rect id="btn-back" x="10%" y="220" width="80%" height="60" fill="#ff0000" pointer-events="all" />
     <text x="50%" y="260" fill="#ffffff" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none">GERI DON</text>
   </rect>
