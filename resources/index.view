@@ -3,27 +3,27 @@
   
   <g id="group-0" display="none">
     <rect id="rect-0" x="5%" y="10" width="90%" height="50" fill="#333333" pointer-events="all" />
-    <text id="text-0" x="50%" y="45" fill="#ffffff" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none">NOT 1</text>
+    <text id="text-0" x="50%" y="45" fill="#ffffff" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text>
   </g>
 
   <g id="group-1" display="none">
     <rect id="rect-1" x="5%" y="65" width="90%" height="50" fill="#333333" pointer-events="all" />
-    <text id="text-1" x="50%" y="100" fill="#ffffff" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none">NOT 2</text>
+    <text id="text-1" x="50%" y="100" fill="#ffffff" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text>
   </g>
 
   <g id="group-2" display="none">
     <rect id="rect-2" x="5%" y="120" width="90%" height="50" fill="#333333" pointer-events="all" />
-    <text id="text-2" x="50%" y="155" fill="#ffffff" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none">NOT 3</text>
+    <text id="text-2" x="50%" y="155" fill="#ffffff" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text>
   </g>
 
   <g id="group-3" display="none">
     <rect id="rect-3" x="5%" y="175" width="90%" height="50" fill="#333333" pointer-events="all" />
-    <text id="text-3" x="50%" y="210" fill="#ffffff" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none">NOT 4</text>
+    <text id="text-3" x="50%" y="210" fill="#ffffff" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text>
   </g>
 
   <g id="group-4" display="none">
     <rect id="rect-4" x="5%" y="230" width="90%" height="50" fill="#333333" pointer-events="all" />
-    <text id="text-4" x="50%" y="265" fill="#ffffff" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none">NOT 5</text>
+    <text id="text-4" x="50%" y="265" fill="#ffffff" font-size="30" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text>
   </g>
 
   <rect id="detail-view" x="0" y="0" width="100%" height="100%" fill="black" display="none">
