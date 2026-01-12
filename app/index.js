@@ -24,16 +24,13 @@ messaging.peerSocket.onmessage = (evt) => {
 function render() {
   rows.forEach((row, i) => {
     if (notes[i]) {
-      // Gelen veriyi string'e çevir
-      let fullText = String(notes[i]);
-      
-      // Gri şeritte ilk 15 karakteri göster (Başlık niyetine)
-      row.txt.text = fullText.substring(0, 15) + "...";
+      // Listede sadece Başlık görünsün
+      row.txt.text = String(notes[i].title).substring(0, 18);
       row.rect.style.display = "inline";
       
       row.rect.onclick = () => {
-        // Detayda tüm metni göster
-        detailTitle.text = fullText;
+        // Tıklayınca detayda sadece İçerik (mavi kısım) görünsün
+        detailTitle.text = String(notes[i].content);
         detailView.style.display = "inline";
       };
     } else {
