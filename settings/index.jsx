@@ -3,13 +3,8 @@ registerSettingsPage((props) => (
     <Section title="Not Listesi">
       <AdditiveList
         settingsKey="notes_list"
-        maxItems="10"
-        addAction={
-          <TextInput
-            label="Not Ekle (Başlık | Not şeklinde)"
-            placeholder="Örn: Market | Süt ve ekmek al"
-          />
-        }
+        maxItems="5"
+        addAction={<TextInput label="Not Girin" placeholder="Notunuzu yazın..." />}
       />
     </Section>
   </Page>
