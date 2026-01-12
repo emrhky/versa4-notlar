@@ -6,9 +6,9 @@ const detailTitle = document.getElementById("detail-title");
 const btnBack = document.getElementById("btn-back");
 let notes = [];
 
-// Elemanları diziye al
+// Satırları diziye alalım
 const rows = [];
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 4; i++) {
   rows.push({
     rect: document.getElementById(`rect-${i}`),
     txt: document.getElementById(`text-${i}`)
@@ -16,23 +16,29 @@ for (let i = 0; i < 5; i++) {
 }
 
 messaging.peerSocket.onmessage = (evt) => {
-  notes = evt.data;
-  render();
+  if (evt.data) {
+    notes = evt.data;
+    render();
+  }
 };
 
 function render() {
-  rows.forEach((row, i) => {
-    if (notes[i]) {
-      row.txt.text = String(notes[i]).substring(0, 20);
-      row.rect.style.display = "inline";
-      row.rect.onclick = () => {
-        detailTitle.text = String(notes[i]);
+  notes.forEach((noteContent, i) => {
+    if (rows[i]) {
+      let safeText = String(noteContent).trim();
+      rows[i].txt.text = safeText.substring(0, 20); // İlk 20 karakter
+      rows[i].rect.style.display = "inline";
+      
+      rows[i].rect.onclick = () => {
+        detailTitle.text = safeText; // Detayda tamamı
         detailView.style.display = "inline";
       };
-    } else {
-      row.rect.style.display = "none";
     }
   });
 }
 
-btnBack.onclick = () => { detailView.style.display = "none"; };
+if (btnBack) {
+  btnBack.onclick = () => {
+    detailView.style.display = "none";
+  };
+}
