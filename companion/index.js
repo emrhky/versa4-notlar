@@ -1,23 +1,23 @@
 import { settingsStorage } from "settings";
 import * as messaging from "messaging";
 
-function sendSingleNote() {
+function sendData() {
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    // Sadece ilk notu al veya test mesajı gönder
-    let data = settingsStorage.getItem("notes");
+    // Ayarlardan veriyi ham olarak al
+    let data = settingsStorage.getItem("not_icerigi");
     if (data) {
-      let notes = JSON.parse(data);
-      // Sadece ilk notu dizi içinde gönderiyoruz
-      messaging.peerSocket.send([notes[0]]);
-      console.log("Not saate gonderildi");
+      // Fitbit ayarları veriyi bazen {"name":"not"} şeklinde tutar, onu ayıklayalım
+      try {
+        let parsed = JSON.parse(data);
+        let text = typeof parsed === 'object' ? (parsed.name || parsed) : parsed;
+        messaging.peerSocket.send(text);
+        console.log("Gonderildi: " + text);
+      } catch(e) {
+        messaging.peerSocket.send(data);
+      }
     }
-  } else {
-    console.log("Baglanti hazır degil, bekleniyor...");
   }
 }
 
-// Ayar her degistiginde gonder
-settingsStorage.onchange = () => { sendSingleNote(); };
-
-// Baglantı acıldıgında gonder
-messaging.peerSocket.onopen = () => { sendSingleNote(); };
+settingsStorage.onchange = () => { sendData(); };
+messaging.peerSocket.onopen = () => { sendData(); };
