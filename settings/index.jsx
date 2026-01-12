@@ -5,12 +5,15 @@ registerSettingsPage((props) => (
         settingsKey="notes_list"
         maxItems="10"
         addAction={
-          <Block>
-            <TextInput label="Başlık" placeholder="Başlık girin..." settingsKey="temp_title" />
-            <TextInput label="Not İçeriği" placeholder="Notu buraya yazın..." settingsKey="temp_content" />
-          </Block>
+          <TextInput
+            label="Not Başlığı ve İçeriği"
+            placeholder="Notunuzu buraya yazın..."
+          />
         }
       />
+    </Section>
+    <Section title="Bilgi">
+      <Text>Not eklemek için yukarıdaki '+' butonuna basın. Eklediğiniz notun üzerine tıklayarak içeriği düzenleyebilirsiniz.</Text>
     </Section>
   </Page>
 ));
