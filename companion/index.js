@@ -1,36 +1,45 @@
 import { settingsStorage } from "settings";
 import * as messaging from "messaging";
 
-// Saat ile JSON halinde notları paylaş
-function sendData() {
+// Notları gönder
+function sendNotes() {
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
     const data = settingsStorage.getItem("notes_list");
 
     if (data) {
-      try {
-        const raw = JSON.parse(data);
+      const raw = JSON.parse(data);
+      const clean = raw.map(item => typeof item === "object" ? item.name : item);
 
-        // Settings'teki format:
-        // { name: "Başlık", value: "İçerik" }
-        const formatted = raw.map(item => ({
-          title: item.name || "",
-          content: item.value || ""
-        }));
-
-        messaging.peerSocket.send({
-          key: "notes",
-          newValue: JSON.stringify(formatted)
-        });
-
-      } catch (e) {
-        console.log("Parse error:", e);
-      }
+      messaging.peerSocket.send({
+        type: "notes",
+        payload: clean
+      });
     }
   }
 }
 
-// Settings değişince → saati güncelle
-settingsStorage.onchange = sendData;
+// Ayarları gönder
+function sendSettings() {
+  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+    messaging.peerSocket.send({
+      type: "settings",
+      payload: {
+        color: JSON.parse(settingsStorage.getItem("note_color") || `"white"`),
+        textSize: JSON.parse(settingsStorage.getItem("note_text_size") || `"medium"`),
+        showNumbers: JSON.parse(settingsStorage.getItem("show_numbers") || "false")
+      }
+    });
+  }
+}
 
-// Saat bağlantı açınca → veriyi gönder
-messaging.peerSocket.onopen = sendData;
+// Tüm değişikliklerde gönder
+settingsStorage.onchange = () => {
+  sendNotes();
+  sendSettings();
+};
+
+// Bağlanınca gönder
+messaging.peerSocket.onopen = () => {
+  sendNotes();
+  sendSettings();
+};
