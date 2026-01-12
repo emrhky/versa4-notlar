@@ -23,17 +23,18 @@ messaging.peerSocket.onmessage = (evt) => {
 };
 
 function render() {
-  rows.forEach((row, i) => {
-    if (notes[i]) {
-      row.txt.text = String(notes[i].title); // Listede başlığı göster
-      row.rect.style.display = "inline";
-      row.rect.onclick = () => {
-        detailTitle.text = String(notes[i].title);
-        detailText.text = String(notes[i].content); // Detayda içeriği göster
+  notes.forEach((note, i) => {
+    if (rows[i]) {
+      // Listede başlığı göster (Beyaz)
+      rows[i].txt.text = String(note.title);
+      rows[i].rect.style.display = "inline";
+      
+      rows[i].rect.onclick = () => {
+        // Detayda mavi başlık ve beyaz içerik
+        detailTitle.text = String(note.title);
+        detailText.text = String(note.content);
         detailView.style.display = "inline";
       };
-    } else {
-      row.rect.style.display = "none";
     }
   });
 }
