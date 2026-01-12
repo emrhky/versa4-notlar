@@ -6,9 +6,11 @@ const detailTitle = document.getElementById("detail-title");
 const btnBack = document.getElementById("btn-back");
 let notes = [];
 
+// Grupları yakalıyoruz
 const rows = [];
 for (let i = 0; i < 4; i++) {
   rows.push({
+    group: document.getElementById(`group-${i}`),
     rect: document.getElementById(`rect-${i}`),
     txt: document.getElementById(`text-${i}`)
   });
@@ -22,22 +24,18 @@ messaging.peerSocket.onmessage = (evt) => {
 function render() {
   rows.forEach((row, i) => {
     if (notes && notes[i]) {
-      // Metni ve kutuyu görünür yap
-      row.rect.style.display = "inline";
-      row.txt.style.display = "inline";
+      // Sadece grubu görünür yapıyoruz, içindekiler (rect ve text) zaten hazır
+      row.group.style.display = "inline";
       
-      // İçeriği ata
-      row.txt.text = "NOT " + (i + 1);
-      
+      // Tıklama olayını kutuya bağlıyoruz
       row.rect.onclick = () => {
         let content = typeof notes[i] === 'object' ? notes[i].name : notes[i];
         detailTitle.text = String(content);
         detailView.style.display = "inline";
       };
     } else {
-      row.rect.style.display = "none";
-      row.txt.style.display = "none";
-      row.txt.text = "";
+      // Not yoksa grubu komple gizle
+      row.group.style.display = "none";
     }
   });
 }
