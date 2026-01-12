@@ -6,7 +6,6 @@ const detailTitle = document.getElementById("detail-title");
 const btnBack = document.getElementById("btn-back");
 let notes = [];
 
-// Satırları diziye alalım
 const rows = [];
 for (let i = 0; i < 4; i++) {
   rows.push({
@@ -16,29 +15,29 @@ for (let i = 0; i < 4; i++) {
 }
 
 messaging.peerSocket.onmessage = (evt) => {
-  if (evt.data) {
-    notes = evt.data;
-    render();
-  }
+  notes = evt.data;
+  render();
 };
 
 function render() {
-  notes.forEach((noteContent, i) => {
-    if (rows[i]) {
-      let safeText = String(noteContent).trim();
-      rows[i].txt.text = safeText.substring(0, 20); // İlk 20 karakter
-      rows[i].rect.style.display = "inline";
+  rows.forEach((row, i) => {
+    if (notes[i]) {
+      // Metni String'e zorla ve ata
+      let content = String(notes[i]);
+      row.txt.text = content.substring(0, 20);
+      row.rect.style.display = "inline";
       
-      rows[i].rect.onclick = () => {
-        detailTitle.text = safeText; // Detayda tamamı
+      row.rect.onclick = () => {
+        detailTitle.text = content;
         detailView.style.display = "inline";
       };
+    } else {
+      row.rect.style.display = "none";
+      row.txt.text = ""; // Eski metni temizle
     }
   });
 }
 
-if (btnBack) {
-  btnBack.onclick = () => {
-    detailView.style.display = "none";
-  };
-}
+btnBack.onclick = () => {
+  detailView.style.display = "none";
+};
