@@ -24,15 +24,14 @@ messaging.peerSocket.onmessage = (evt) => {
 function render() {
   rows.forEach((row, i) => {
     if (notes[i]) {
-      // Listede sadece numara gösteriyoruz (Risk yok)
+      // Listeye 1-2-3-4 yazdırıyoruz (Garantili görünürlük)
       row.txt.text = "NOT " + (i + 1);
       row.rect.style.display = "inline";
       
       row.rect.onclick = () => {
-        // Detayda her şeyi göster (Başlık ve İçerik birleşik halde)
-        // Eğer verin object ise .name'i, değilse kendisini string yap
-        let fullContent = typeof notes[i] === 'object' ? notes[i].name : notes[i];
-        detailTitle.text = String(fullContent);
+        // Detay ekranına içeriği basıyoruz
+        let content = typeof notes[i] === 'object' ? notes[i].name : notes[i];
+        detailTitle.text = String(content).substring(0, 120); 
         detailView.style.display = "inline";
       };
     } else {
