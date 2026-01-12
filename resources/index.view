@@ -1,0 +1,5 @@
+<view xmlns="http://www.w3.org/2000/svg"
+      viewportWidth="300"
+      viewportHeight="300">
+  <canvas href="index.gui" />
+</view>
