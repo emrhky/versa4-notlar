@@ -3,38 +3,32 @@ import * as messaging from "messaging";
 
 const detailView = document.getElementById("detail-view");
 const detailTitle = document.getElementById("detail-title");
-const detailText = document.getElementById("detail-text");
 const btnBack = document.getElementById("btn-back");
 let notes = [];
 
-const rows = [];
-for (let i = 0; i < 4; i++) {
-  rows.push({
-    rect: document.getElementById(`rect-${i}`),
-    txt: document.getElementById(`text-${i}`)
-  });
-}
+const rows = [
+  { rect: document.getElementById("rect-0"), txt: document.getElementById("text-0") },
+  { rect: document.getElementById("rect-1"), txt: document.getElementById("text-1") },
+  { rect: document.getElementById("rect-2"), txt: document.getElementById("text-2") }
+];
 
 messaging.peerSocket.onmessage = (evt) => {
-  if (evt.data) {
-    notes = evt.data;
-    render();
-  }
+  notes = evt.data;
+  render();
 };
 
 function render() {
-  notes.forEach((note, i) => {
-    if (rows[i]) {
-      // Listede başlığı göster (Beyaz)
-      rows[i].txt.text = String(note.title);
-      rows[i].rect.style.display = "inline";
-      
-      rows[i].rect.onclick = () => {
-        // Detayda mavi başlık ve beyaz içerik
-        detailTitle.text = String(note.title);
-        detailText.text = String(note.content);
+  rows.forEach((row, i) => {
+    if (notes[i]) {
+      let content = String(notes[i]);
+      row.txt.text = content.substring(0, 20);
+      row.rect.style.display = "inline";
+      row.rect.onclick = () => {
+        detailTitle.text = content;
         detailView.style.display = "inline";
       };
+    } else {
+      row.rect.style.display = "none";
     }
   });
 }
