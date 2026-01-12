@@ -24,18 +24,15 @@ messaging.peerSocket.onmessage = (evt) => {
 function render() {
   rows.forEach((row, i) => {
     if (notes[i]) {
-      // BAŞLIĞI GÜVENLİ ŞEKİLDE AL
-      // Eğer başlık varsa onu, yoksa içeriğin ilk 15 harfini al
-      let displayTitle = notes[i].title && notes[i].title !== "Başlıksız" 
-                         ? notes[i].title 
-                         : String(notes[i].content).substring(0, 15);
-
-      row.txt.text = String(displayTitle);
+      // Listede sadece numara gösteriyoruz (Risk yok)
+      row.txt.text = "NOT " + (i + 1);
       row.rect.style.display = "inline";
       
       row.rect.onclick = () => {
-        // İÇERİĞİ GÜVENLİ ŞEKİLDE AL
-        detailTitle.text = String(notes[i].content);
+        // Detayda her şeyi göster (Başlık ve İçerik birleşik halde)
+        // Eğer verin object ise .name'i, değilse kendisini string yap
+        let fullContent = typeof notes[i] === 'object' ? notes[i].name : notes[i];
+        detailTitle.text = String(fullContent);
         detailView.style.display = "inline";
       };
     } else {
