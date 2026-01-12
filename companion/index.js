@@ -1,23 +1,23 @@
 import { settingsStorage } from "settings";
 import * as messaging from "messaging";
 
-function sendData() {
+function sendAllNotes() {
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    // Ayarlardan veriyi ham olarak al
-    let data = settingsStorage.getItem("not_icerigi");
+    const data = settingsStorage.getItem("notes_list");
     if (data) {
-      // Fitbit ayarları veriyi bazen {"name":"not"} şeklinde tutar, onu ayıklayalım
       try {
-        let parsed = JSON.parse(data);
-        let text = typeof parsed === 'object' ? (parsed.name || parsed) : parsed;
-        messaging.peerSocket.send(text);
-        console.log("Gonderildi: " + text);
+        const rawNotes = JSON.parse(data);
+        // Fitbit AdditiveList formatını sade metin dizisine çeviriyoruz
+        const cleanNotes = rawNotes.map(item => {
+          return typeof item === 'object' ? (item.name || JSON.stringify(item)) : item;
+        });
+        messaging.peerSocket.send(cleanNotes);
       } catch(e) {
-        messaging.peerSocket.send(data);
+        console.log("Dönüştürme hatası");
       }
     }
   }
 }
 
-settingsStorage.onchange = () => { sendData(); };
-messaging.peerSocket.onopen = () => { sendData(); };
+settingsStorage.onchange = () => { sendAllNotes(); };
+messaging.peerSocket.onopen = () => { sendAllNotes(); };
