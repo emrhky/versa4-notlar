@@ -11,15 +11,12 @@ function sendData() {
           let fullText = typeof item === 'object' ? item.name : item;
           let parts = fullText.split('|');
           return {
-            // Başlığı 20 karakterle sınırlıyoruz (saat ekranı için)
             title: parts[0] ? parts[0].trim().substring(0, 20) : "Başlıksız",
             content: parts[1] ? parts[1].trim() : fullText.trim()
           };
         });
         messaging.peerSocket.send(clean);
-      } catch(e) {
-        console.log("Gönderim hatası");
-      }
+      } catch(e) {}
     }
   }
 }
