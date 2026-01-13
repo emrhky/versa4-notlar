@@ -53,12 +53,15 @@ function render() {
     if (notes && notes[i]) {
       row.group.style.display = "inline";
       row.txt.text = String(notes[i].title);
+      
+      // RENKLERİ UYGULA
       row.rect.style.fill = notes[i].bgColor || "#333333";
       row.txt.style.fill = notes[i].txtColor || "#FFFFFF";
       
       row.rect.onclick = () => {
         currentIdx = i;
         detailTitle.text = String(notes[i].content);
+        // Detay ekranındaki metin rengini de kullanıcının seçtiği renk yap
         detailTitle.style.fill = notes[i].txtColor || "#00ffff";
         detailView.style.display = "inline";
       };
