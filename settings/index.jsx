@@ -28,23 +28,25 @@ registerSettingsPage((props) => (
         onClick={() => {
           const t = props.settingsStorage.getItem("temp_title");
           const c = props.settingsStorage.getItem("temp_content");
-          const bg = props.settingsStorage.getItem("temp_bg_color") || '{"color":"#333333"}';
-          const txt = props.settingsStorage.getItem("temp_txt_color") || '{"color":"#FFFFFF"}';
+          const bg = props.settingsStorage.getItem("temp_bg_color");
+          const txt = props.settingsStorage.getItem("temp_txt_color");
           
           if (t && c) {
             let notes = JSON.parse(props.settingsStorage.getItem("notes_list") || "[]");
             if (notes.length < 5) {
               const titleVal = JSON.parse(t).name;
               const contentVal = JSON.parse(c).name;
-              const bgVal = JSON.parse(bg).color;
-              const txtVal = JSON.parse(txt).color;
+              // Renk seçilmediyse varsayılan renkleri ata
+              const bgVal = bg ? JSON.parse(bg) : "#333333";
+              const txtVal = txt ? JSON.parse(txt) : "#FFFFFF";
 
               notes.push({
                 name: `${titleVal} | ${contentVal}`,
-                bgColor: bgVal,
-                txtColor: txtVal
+                bgColor: bgVal.color || bgVal, // Hem obje hem string durumunu kapsar
+                txtColor: txtVal.color || txtVal
               });
               props.settingsStorage.setItem("notes_list", JSON.stringify(notes));
+              // Alanları temizle
               props.settingsStorage.removeItem("temp_title");
               props.settingsStorage.removeItem("temp_content");
             }
