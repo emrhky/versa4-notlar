@@ -5,7 +5,10 @@ import clock from "clock";
 
 const clockLabel = document.getElementById("clock-label");
 const detailView = document.getElementById("detail-view");
-const detailTitle = document.getElementById("detail-title");
+const detailTitle = document.getElementById("detail-title"); // Not içeriği textarea
+const detailHeaderBg = document.getElementById("detail-header-bg");
+const detailHeaderTxt = document.getElementById("detail-header-txt");
+
 const btnBack = document.getElementById("btn-back");
 const btnDeleteInit = document.getElementById("btn-delete-init");
 const confirmView = document.getElementById("confirm-view");
@@ -53,16 +56,20 @@ function render() {
     if (notes && notes[i]) {
       row.group.style.display = "inline";
       row.txt.text = String(notes[i].title);
-      
-      // RENKLERİ UYGULA
       row.rect.style.fill = notes[i].bgColor || "#333333";
       row.txt.style.fill = notes[i].txtColor || "#FFFFFF";
       
       row.rect.onclick = () => {
         currentIdx = i;
+        // Detay Başlığı (Liste ile aynı renkler)
+        detailHeaderBg.style.fill = notes[i].bgColor || "#333333";
+        detailHeaderTxt.style.fill = notes[i].txtColor || "#FFFFFF";
+        detailHeaderTxt.text = String(notes[i].title);
+        
+        // Not İçeriği (Sarı kağıt üzerinde seçilen yazı rengi)
         detailTitle.text = String(notes[i].content);
-        // Detay ekranındaki metin rengini de kullanıcının seçtiği renk yap
-        detailTitle.style.fill = notes[i].txtColor || "#00ffff";
+        detailTitle.style.fill = notes[i].txtColor || "#000000"; 
+        
         detailView.style.display = "inline";
       };
     } else {
