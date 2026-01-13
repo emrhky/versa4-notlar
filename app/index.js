@@ -3,29 +3,85 @@ import * as messaging from "messaging";
 import * as fs from "fs";
 import clock from "clock";
 
+// Elementleri Tanımla
+const clockLabel = document.getElementById("clock-label");
+const detailView = document.getElementById("detail-view");
+const detailTitle = document.getElementById("detail-title");
+const detailHeaderBg = document.getElementById("detail-header-bg");
+const detailHeaderTxt = document.getElementById("detail-header-txt");
 const detailTimestamp = document.getElementById("detail-timestamp");
-// ... (diğer tanımlamalar aynı) ...
 
+const btnBack = document.getElementById("btn-back");
+const btnDeleteInit = document.getElementById("btn-delete-init");
+const confirmView = document.getElementById("confirm-view");
+const btnYes = document.getElementById("btn-yes");
+const btnNo = document.getElementById("btn-no");
+
+const FILE_NAME = "notlar.json";
+let notes = [];
+let currentIdx = -1;
+
+// --- Saat İşlemleri ---
+clock.granularity = "minutes";
+clock.ontick = (evt) => {
+  let today = evt.date;
+  let hours = ("0" + today.getHours()).slice(-2);
+  let mins = ("0" + today.getMinutes()).slice(-2);
+  clockLabel.text = `${hours}:${mins}`;
+};
+
+// --- Liste Satırlarını Hazırla ---
+const rows = [];
+for (let i = 0; i < 5; i++) {
+  rows.push({
+    group: document.getElementById(`group-${i}`),
+    rect: document.getElementById(`rect-${i}`),
+    txt: document.getElementById(`text-${i}`)
+  });
+}
+
+// --- Hafızadan Yükle ---
+try {
+  if (fs.existsSync(FILE_NAME)) {
+    notes = fs.readFileSync(FILE_NAME, "json");
+    render();
+  }
+} catch (e) {
+  console.log("Yükleme hatası: " + e);
+  notes = [];
+}
+
+// --- Mesajlaşma ---
+messaging.peerSocket.onmessage = (evt) => {
+  if (evt.data) {
+    notes = evt.data;
+    fs.writeFileSync(FILE_NAME, notes, "json");
+    render();
+  }
+};
+
+// --- Ekrana Basma (Render) ---
 function render() {
   rows.forEach((row, i) => {
     if (notes && notes[i]) {
       row.group.style.display = "inline";
       row.txt.text = String(notes[i].title);
       
-      // Renk Fix: Doğrudan atama
-      row.rect.style.fill = notes[i].bgColor;
-      row.txt.style.fill = notes[i].txtColor;
+      // Renkleri Uygula (Pastel/Siyah/Gri)
+      row.rect.style.fill = notes[i].bgColor || "#333333";
+      row.txt.style.fill = notes[i].txtColor || "#FFFFFF";
       
       row.rect.onclick = () => {
         currentIdx = i;
-        detailHeaderBg.style.fill = notes[i].bgColor;
-        detailHeaderTxt.style.fill = notes[i].txtColor;
+        
+        // Detay Başlık Alanı (Liste ile aynı renkler)
+        detailHeaderBg.style.fill = notes[i].bgColor || "#333333";
+        detailHeaderTxt.style.fill = notes[i].txtColor || "#FFFFFF";
         detailHeaderTxt.text = String(notes[i].title);
         
+        // Not İçeriği ve Zaman Damgası
         detailTitle.text = String(notes[i].content);
-        detailTitle.style.fill = notes[i].txtColor; 
-        
-        // Zaman damgasını bas
+        detailTitle.style.fill = notes[i].txtColor || "#000000"; 
         detailTimestamp.text = String(notes[i].timestamp || "");
         
         detailView.style.display = "inline";
@@ -35,4 +91,21 @@ function render() {
     }
   });
 }
-// ... (geri kalan kodlar aynı) ...
+
+// --- Buton Olayları ---
+btnBack.onclick = () => { detailView.style.display = "none"; };
+btnDeleteInit.onclick = () => { confirmView.style.display = "inline"; };
+btnNo.onclick = () => { confirmView.style.display = "none"; };
+btnYes.onclick = () => {
+  if (currentIdx > -1) {
+    notes.splice(currentIdx, 1);
+    fs.writeFileSync(FILE_NAME, notes, "json");
+    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+      messaging.peerSocket.send({ action: "delete", index: currentIdx });
+    }
+    confirmView.style.display = "none";
+    detailView.style.display = "none";
+    render();
+    currentIdx = -1;
+  }
+};
