@@ -1,1 +1,1 @@
-# versa4-notlar
+# versa4-notlar.
