@@ -34,13 +34,21 @@ registerSettingsPage((props) => (
           if (t && c) {
             let notes = JSON.parse(props.settingsStorage.getItem("notes_list") || "[]");
             if (notes.length < 5) {
-              const bgVal = bg ? JSON.parse(bg) : {color: "#000000"};
-              const txtVal = txt ? JSON.parse(txt) : {color: "#FFFFFF"};
+              // Zaman damgası oluşturma (SS:DD, GG/AA/YYYY)
+              const now = new Date();
+              const ts = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}, ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()}`;
+
+              // Renk objelerini güvenli çözümleme
+              let bgParsed = "#000000";
+              let txtParsed = "#FFFFFF";
+              try { if(bg) bgParsed = JSON.parse(bg).color || JSON.parse(bg); } catch(e) {}
+              try { if(txt) txtParsed = JSON.parse(txt).color || JSON.parse(txt); } catch(e) {}
 
               notes.push({
                 name: `${JSON.parse(t).name} | ${JSON.parse(c).name}`,
-                bgColor: bgVal.color,
-                txtColor: txtVal.color
+                bgColor: bgParsed,
+                txtColor: txtParsed,
+                timestamp: ts
               });
               props.settingsStorage.setItem("notes_list", JSON.stringify(notes));
               props.settingsStorage.removeItem("temp_title");
