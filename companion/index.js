@@ -7,15 +7,32 @@ function sendData() {
     if (data) {
       try {
         const raw = JSON.parse(data);
-        // Karmaşık objeyi temiz metin listesine çevirir
-        const clean = raw.map(item => (typeof item === 'object' ? item.name : item));
+        const clean = raw.map(item => {
+          let fullText = item.name || "";
+          let parts = fullText.split('|');
+          return {
+            title: parts[0] ? parts[0].trim().substring(0, 20) : "Başlıksız",
+            content: parts[1] ? parts[1].trim() : fullText.trim(),
+            bgColor: item.bgColor || "#333333",
+            txtColor: item.txtColor || "#FFFFFF"
+          };
+        });
         messaging.peerSocket.send(clean);
-      } catch(e) {
-        console.log("Dönüştürme hatası");
-      }
+      } catch(e) {}
     }
   }
 }
+
+messaging.peerSocket.onmessage = (evt) => {
+  if (evt.data && evt.data.action === "delete") {
+    let currentList = JSON.parse(settingsStorage.getItem("notes_list") || "[]");
+    if (currentList.length > evt.data.index) {
+      currentList.splice(evt.data.index, 1);
+      settingsStorage.setItem("notes_list", JSON.stringify(currentList));
+      sendData();
+    }
+  }
+};
 
 settingsStorage.onchange = sendData;
 messaging.peerSocket.onopen = sendData;
