@@ -4,21 +4,21 @@ registerSettingsPage((props) => (
       <TextInput label="Başlık" placeholder="Örn: Market" settingsKey="temp_title" />
       <TextInput label="Not İçeriği" placeholder="Örn: Süt al" settingsKey="temp_content" />
       
-      <Text bold italic>Arka Plan Rengi</Text>
+      <Text bold italic>Başlık Arka Plan (Liste)</Text>
       <ColorSelect
         settingsKey="temp_bg_color"
         colors={[
-          {color: '#333333'}, {color: '#4E5D6C'}, {color: '#005500'}, 
-          {color: '#550000'}, {color: '#000055'}, {color: '#555500'}
+          {color: '#000000'}, {color: '#808080'}, {color: '#A2E4B8'}, 
+          {color: '#AEC6CF'}, {color: '#FFB6C1'}, {color: '#FF6961'}
         ]}
       />
       
-      <Text bold italic>Metin Rengi</Text>
+      <Text bold italic>Yazı Rengi</Text>
       <ColorSelect
         settingsKey="temp_txt_color"
         colors={[
-          {color: '#FFFFFF'}, {color: '#00FFFF'}, {color: '#FFFF00'}, 
-          {color: '#FFA500'}, {color: '#FFC0CB'}, {color: '#ADFF2F'}
+          {color: '#000000'}, {color: '#FFFFFF'}, {color: '#FF0000'}, 
+          {color: '#FFFF00'}, {color: '#00FF00'}, {color: '#0000FF'}
         ]}
       />
 
@@ -34,19 +34,15 @@ registerSettingsPage((props) => (
           if (t && c) {
             let notes = JSON.parse(props.settingsStorage.getItem("notes_list") || "[]");
             if (notes.length < 5) {
-              const titleVal = JSON.parse(t).name;
-              const contentVal = JSON.parse(c).name;
-              // Renk seçilmediyse varsayılan renkleri ata
-              const bgVal = bg ? JSON.parse(bg) : "#333333";
-              const txtVal = txt ? JSON.parse(txt) : "#FFFFFF";
+              const bgVal = bg ? JSON.parse(bg) : {color: "#000000"};
+              const txtVal = txt ? JSON.parse(txt) : {color: "#FFFFFF"};
 
               notes.push({
-                name: `${titleVal} | ${contentVal}`,
-                bgColor: bgVal.color || bgVal, // Hem obje hem string durumunu kapsar
-                txtColor: txtVal.color || txtVal
+                name: `${JSON.parse(t).name} | ${JSON.parse(c).name}`,
+                bgColor: bgVal.color,
+                txtColor: txtVal.color
               });
               props.settingsStorage.setItem("notes_list", JSON.stringify(notes));
-              // Alanları temizle
               props.settingsStorage.removeItem("temp_title");
               props.settingsStorage.removeItem("temp_content");
             }
