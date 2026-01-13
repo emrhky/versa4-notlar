@@ -1,36 +1,15 @@
-import document from "document";
-import * as messaging from "messaging";
-
-const detailView = document.getElementById("detail-view");
-const detailTitle = document.getElementById("detail-title");
-const btnBack = document.getElementById("btn-back");
-let notes = [];
-
-const rows = [];
-for (let i = 0; i < 5; i++) {
-  rows.push({
-    group: document.getElementById(`group-${i}`),
-    rect: document.getElementById(`rect-${i}`),
-    txt: document.getElementById(`text-${i}`)
-  });
-}
-
-messaging.peerSocket.onmessage = (evt) => {
-  if (evt.data) {
-    notes = evt.data;
-    render();
-  }
-};
+// ... (üst kısımlar Draft dalıyla aynı) ...
 
 function render() {
   rows.forEach((row, i) => {
     if (notes && notes[i]) {
       row.group.style.display = "inline";
-      // Metni direkt atıyoruz, kısıtlama yok
       row.txt.text = String(notes[i].title);
       
       row.rect.onclick = () => {
-        detailTitle.text = String(notes[i].content);
+        // Metni textarea'ya basarken 250 karakter sınırı koyuyoruz (XML'deki text-length ile uyumlu)
+        let content = String(notes[i].content);
+        detailTitle.text = content.substring(0, 250); 
         detailView.style.display = "inline";
       };
     } else {
@@ -39,6 +18,4 @@ function render() {
   });
 }
 
-btnBack.onclick = () => {
-  detailView.style.display = "none";
-};
+// ... (Geri dön butonu aynı) ...
