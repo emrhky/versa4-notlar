@@ -3,100 +3,104 @@ import * as messaging from "messaging";
 import * as fs from "fs";
 import clock from "clock";
 
-const FILE_NOTES = "notes.json";
-const FILE_CHECK = "check.json";
+const clockLabel = document.getElementById("clock-label");
+const emptyLabel = document.getElementById("empty-label");
+const detailView = document.getElementById("detail-view");
+const detailTitle = document.getElementById("detail-title");
+const detailHeaderBg = document.getElementById("detail-header-bg");
+const detailHeaderTxt = document.getElementById("detail-header-txt");
+const detailTimestamp = document.getElementById("detail-timestamp");
+
+const btnBack = document.getElementById("btn-back");
+const btnDeleteInit = document.getElementById("btn-delete-init");
+const confirmView = document.getElementById("confirm-view");
+const btnYes = document.getElementById("btn-yes");
+const btnNo = document.getElementById("btn-no");
+
+const FILE_NAME = "notlar.json";
 let notes = [];
-let checklistObj = { title: "LİSTEM", items: [] };
 let currentIdx = -1;
 
 clock.granularity = "minutes";
 clock.ontick = (evt) => {
-  document.getElementById("clock-label").text = ("0" + evt.date.getHours()).slice(-2) + ":" + ("0" + evt.date.getMinutes()).slice(-2);
+  let today = evt.date;
+  clockLabel.text = ("0" + today.getHours()).slice(-2) + ":" + ("0" + today.getMinutes()).slice(-2);
 };
 
-// Yükleme
+// Slot sayısını 6'ya ayarladık
+const rows = [];
+for (let i = 0; i < 6; i++) {
+  rows.push({
+    group: document.getElementById(`group-${i}`),
+    rect: document.getElementById(`rect-${i}`),
+    txt: document.getElementById(`text-${i}`)
+  });
+}
+
 try {
-  if (fs.existsSync(FILE_NOTES)) notes = fs.readFileSync(FILE_NOTES, "json");
-  if (fs.existsSync(FILE_CHECK)) checklistObj = fs.readFileSync(FILE_CHECK, "json");
-} catch(e) {}
+  if (fs.existsSync(FILE_NAME)) {
+    notes = fs.readFileSync(FILE_NAME, "json");
+    render();
+  }
+} catch (e) { notes = []; render(); }
 
 messaging.peerSocket.onmessage = (evt) => {
-  if (evt.data.type === "checklist") {
-    checklistObj = evt.data.data;
-    fs.writeFileSync(FILE_CHECK, checklistObj, "json");
-  } else {
+  if (evt.data) {
     notes = evt.data;
-    fs.writeFileSync(FILE_NOTES, notes, "json");
+    fs.writeFileSync(FILE_NAME, notes, "json");
+    render();
   }
-  render();
 };
 
 function render() {
-  for (let i = 0; i < 5; i++) {
-    let group = document.getElementById(`group-${i}`);
-    if (notes[i]) {
-      group.style.display = "inline";
-      let r = document.getElementById(`rect-${i}`);
-      let t = document.getElementById(`text-${i}`);
-      t.text = notes[i].title;
-      r.style.fill = notes[i].bgColor;
-      t.style.fill = notes[i].txtColor;
-      r.onclick = () => {
+  if (!notes || notes.length === 0) {
+    emptyLabel.style.display = "inline";
+  } else {
+    emptyLabel.style.display = "none";
+  }
+
+  rows.forEach((row, i) => {
+    if (notes && notes[i]) {
+      row.group.style.display = "inline";
+      row.txt.text = String(notes[i].title);
+      row.rect.style.fill = String(notes[i].bgColor);
+      row.txt.style.fill = String(notes[i].txtColor);
+      
+      row.rect.onclick = () => {
         currentIdx = i;
-        document.getElementById("detail-header-bg").style.fill = notes[i].bgColor;
-        document.getElementById("detail-header-txt").style.fill = notes[i].txtColor;
-        document.getElementById("detail-header-txt").text = notes[i].title;
-        document.getElementById("detail-title").text = notes[i].content;
-        document.getElementById("detail-timestamp").text = notes[i].timestamp || "";
-        document.getElementById("detail-view").style.display = "inline";
+        detailHeaderBg.style.fill = String(notes[i].bgColor);
+        detailHeaderTxt.style.fill = String(notes[i].txtColor);
+        detailHeaderTxt.text = String(notes[i].title);
+        detailTitle.text = String(notes[i].content);
+        
+        if (notes[i].txtColor === "white" || notes[i].txtColor === "#FFFFFF") {
+           detailTitle.style.fill = "black";
+        } else {
+           detailTitle.style.fill = String(notes[i].txtColor);
+        }
+        
+        detailTimestamp.text = String(notes[i].timestamp || "");
+        detailView.style.display = "inline";
       };
-    } else { group.style.display = "none"; }
-  }
-
-  // Dinamik Liste Butonu
-  const showList = checklistObj.items && checklistObj.items.length > 0;
-  document.getElementById("btn-open-list").style.display = showList ? "inline" : "none";
-  document.getElementById("txt-open-list").style.display = showList ? "inline" : "none";
-  document.getElementById("txt-open-list").text = checklistObj.title + " 🛒";
-  
-  document.getElementById("empty-label").style.display = (notes.length === 0 && !showList) ? "inline" : "none";
+    } else {
+      row.group.style.display = "none";
+    }
+  });
 }
 
-function renderChecklist() {
-  document.getElementById("checklist-title-label").text = checklistObj.title;
-  for (let i = 0; i < 5; i++) {
-    let g = document.getElementById(`li-${i}`);
-    if (checklistObj.items[i]) {
-      g.style.display = "inline";
-      document.getElementById(`lit-${i}`).text = checklistObj.items[i].text;
-      document.getElementById(`box-${i}`).style.fill = checklistObj.items[i].checked ? "lime" : "white";
-      document.getElementById(`chk-area-${i}`).onclick = () => {
-        checklistObj.items[i].checked = !checklistObj.items[i].checked;
-        fs.writeFileSync(FILE_CHECK, checklistObj, "json");
-        renderChecklist();
-      };
-    } else { g.style.display = "none"; }
+btnBack.onclick = () => { detailView.style.display = "none"; };
+btnDeleteInit.onclick = () => { confirmView.style.display = "inline"; };
+btnNo.onclick = () => { confirmView.style.display = "none"; };
+btnYes.onclick = () => {
+  if (currentIdx > -1) {
+    notes.splice(currentIdx, 1);
+    fs.writeFileSync(FILE_NAME, notes, "json");
+    if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+      messaging.peerSocket.send({ action: "delete", index: currentIdx });
+    }
+    confirmView.style.display = "none";
+    detailView.style.display = "none";
+    render();
+    currentIdx = -1;
   }
-}
-
-document.getElementById("btn-open-list").onclick = () => {
-  renderChecklist();
-  document.getElementById("checklist-view").style.display = "inline";
 };
-
-document.getElementById("btn-back").onclick = () => { document.getElementById("detail-view").style.display = "none"; };
-document.getElementById("btn-list-back").onclick = () => { document.getElementById("checklist-view").style.display = "none"; };
-document.getElementById("btn-delete-init").onclick = () => { document.getElementById("confirm-view").style.display = "inline"; };
-document.getElementById("btn-no").onclick = () => { document.getElementById("confirm-view").style.display = "none"; };
-document.getElementById("btn-yes").onclick = () => {
-  notes.splice(currentIdx, 1);
-  fs.writeFileSync(FILE_NOTES, notes, "json");
-  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-    messaging.peerSocket.send({ action: "delete", index: currentIdx });
-  }
-  document.getElementById("confirm-view").style.display = "none";
-  document.getElementById("detail-view").style.display = "none";
-  render();
-};
-
-render();
