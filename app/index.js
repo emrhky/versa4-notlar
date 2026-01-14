@@ -2,6 +2,18 @@ import document from "document";
 import * as messaging from "messaging";
 import * as fs from "fs";
 import clock from "clock";
+import { locale } from "user-settings";
+
+// Dil Sözlüğü
+const isTr = locale.language.startsWith("tr");
+const ui = {
+  empty: isTr ? "Henüz bir notunuz yok. Lütfen telefon uygulamasından ekleyin." : "No notes yet. Please add a note from the phone app.",
+  back: isTr ? "GERİ" : "BACK",
+  del: isTr ? "SİL" : "DELETE",
+  conf: isTr ? "Silinsin mi?" : "Delete note?",
+  yes: isTr ? "EVET" : "YES",
+  no: isTr ? "HAYIR" : "NO"
+};
 
 const clockLabel = document.getElementById("clock-label");
 const emptyLabel = document.getElementById("empty-label");
@@ -17,6 +29,14 @@ const confirmView = document.getElementById("confirm-view");
 const btnYes = document.getElementById("btn-yes");
 const btnNo = document.getElementById("btn-no");
 
+// UI Metinlerini dile göre ata
+emptyLabel.text = ui.empty;
+document.getElementById("txt-back").text = ui.back;
+document.getElementById("txt-del").text = ui.del;
+document.getElementById("txt-conf").text = ui.conf;
+document.getElementById("txt-yes").text = ui.yes;
+document.getElementById("txt-no").text = ui.no;
+
 const FILE_NAME = "notlar.json";
 let notes = [];
 let currentIdx = -1;
@@ -27,9 +47,9 @@ clock.ontick = (evt) => {
   clockLabel.text = ("0" + today.getHours()).slice(-2) + ":" + ("0" + today.getMinutes()).slice(-2);
 };
 
-// 10 Slot Hazırlama
+// V3.71 - 5 Slot
 const rows = [];
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 5; i++) {
   rows.push({
     group: document.getElementById(`group-${i}`),
     rect: document.getElementById(`rect-${i}`),
@@ -53,11 +73,7 @@ messaging.peerSocket.onmessage = (evt) => {
 };
 
 function render() {
-  if (!notes || notes.length === 0) {
-    emptyLabel.style.display = "inline";
-  } else {
-    emptyLabel.style.display = "none";
-  }
+  emptyLabel.style.display = (notes.length === 0) ? "inline" : "none";
 
   rows.forEach((row, i) => {
     if (notes && notes[i]) {
@@ -73,6 +89,7 @@ function render() {
         detailHeaderTxt.text = String(notes[i].title);
         detailTitle.text = String(notes[i].content);
         
+        // Beyaz yazı istisnası (V3.71)
         if (notes[i].txtColor === "white" || notes[i].txtColor === "#FFFFFF") {
            detailTitle.style.fill = "black";
         } else {
