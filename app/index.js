@@ -62,22 +62,24 @@ function render() {
     if (notes && notes[i]) {
       row.group.style.display = "inline";
       row.txt.text = String(notes[i].title);
-      row.rect.style.fill = notes[i].bgColor;
-      row.txt.style.fill = notes[i].txtColor;
+      
+      // RENK UYGULAMA (Garantili yöntem)
+      row.rect.style.fill = String(notes[i].bgColor);
+      row.txt.style.fill = String(notes[i].txtColor);
       
       row.rect.onclick = () => {
         currentIdx = i;
-        detailHeaderBg.style.fill = notes[i].bgColor;
-        detailHeaderTxt.style.fill = notes[i].txtColor;
+        detailHeaderBg.style.fill = String(notes[i].bgColor);
+        detailHeaderTxt.style.fill = String(notes[i].txtColor);
         detailHeaderTxt.text = String(notes[i].title);
         
         detailTitle.text = String(notes[i].content);
         
-        // BEYAZ YAZI KONTROLÜ: Sarı zemin üzerinde okunabilirlik
+        // BEYAZ YAZI KONTROLÜ
         if (notes[i].txtColor === "white" || notes[i].txtColor === "#FFFFFF") {
            detailTitle.style.fill = "black";
         } else {
-           detailTitle.style.fill = notes[i].txtColor;
+           detailTitle.style.fill = String(notes[i].txtColor);
         }
         
         detailTimestamp.text = String(notes[i].timestamp || "");
