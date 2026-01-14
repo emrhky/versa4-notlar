@@ -13,14 +13,14 @@ function sendData() {
           return {
             title: parts[0] ? parts[0].trim().substring(0, 20) : "Başlıksız",
             content: parts[1] ? parts[1].trim() : fullText.trim(),
-            bgColor: item.bgColor || "grey",
+            bgColor: item.bgColor || "#D3D3D3",
             txtColor: item.txtColor || "white",
             timestamp: item.timestamp || ""
           };
         });
         messaging.peerSocket.send(clean);
       } catch(e) {
-        console.log("Companion data parse error");
+        console.log("Companion parse error");
       }
     }
   }
