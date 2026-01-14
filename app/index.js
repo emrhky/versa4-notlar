@@ -27,8 +27,9 @@ clock.ontick = (evt) => {
   clockLabel.text = ("0" + today.getHours()).slice(-2) + ":" + ("0" + today.getMinutes()).slice(-2);
 };
 
+// 10 Slot Hazırlama
 const rows = [];
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 10; i++) {
   rows.push({
     group: document.getElementById(`group-${i}`),
     rect: document.getElementById(`rect-${i}`),
@@ -70,10 +71,8 @@ function render() {
         detailHeaderBg.style.fill = String(notes[i].bgColor);
         detailHeaderTxt.style.fill = String(notes[i].txtColor);
         detailHeaderTxt.text = String(notes[i].title);
-        
         detailTitle.text = String(notes[i].content);
         
-        // Beyaz yazı rengi seçildiyse açık zeminde siyah olarak göster
         if (notes[i].txtColor === "white" || notes[i].txtColor === "#FFFFFF") {
            detailTitle.style.fill = "black";
         } else {
