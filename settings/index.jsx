@@ -8,8 +8,8 @@ registerSettingsPage((props) => (
       <ColorSelect
         settingsKey="temp_bg_color"
         colors={[
-          {color: '#000000'}, {color: '#808080'}, {color: '#A2E4B8'}, 
-          {color: '#AEC6CF'}, {color: '#FFB6C1'}, {color: '#FF6961'}
+          {color: 'black'}, {color: 'grey'}, {color: 'red'}, 
+          {color: 'blue'}, {color: 'green'}, {color: 'purple'}
         ]}
       />
       
@@ -17,8 +17,8 @@ registerSettingsPage((props) => (
       <ColorSelect
         settingsKey="temp_txt_color"
         colors={[
-          {color: '#000000'}, {color: '#FFFFFF'}, {color: '#FF0000'}, 
-          {color: '#FFFF00'}, {color: '#00FF00'}, {color: '#0000FF'}
+          {color: 'white'}, {color: 'yellow'}, {color: 'cyan'}, 
+          {color: 'lime'}, {color: 'orange'}, {color: 'black'}
         ]}
       />
 
@@ -37,15 +37,26 @@ registerSettingsPage((props) => (
               const now = new Date();
               const ts = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}, ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()}`;
 
-              let bgVal = bg ? JSON.parse(bg).color : "#000000";
-              let txtVal = txt ? JSON.parse(txt).color : "#FFFFFF";
+              // Renk ayıklama (Objeden sadece renk metnini alıyoruz)
+              let bgVal = "black";
+              let txtVal = "white";
+              
+              if (bg) {
+                const parsedBg = JSON.parse(bg);
+                bgVal = typeof parsedBg === 'object' ? parsedBg.color : parsedBg;
+              }
+              if (txt) {
+                const parsedTxt = JSON.parse(txt);
+                txtVal = typeof parsedTxt === 'object' ? parsedTxt.color : parsedTxt;
+              }
 
               notes.push({
                 name: `${JSON.parse(t).name} | ${JSON.parse(c).name}`,
-                bgColor: bgVal,
-                txtColor: txtVal,
+                bgColor: String(bgVal),
+                txtColor: String(txtVal),
                 timestamp: ts
               });
+              
               props.settingsStorage.setItem("notes_list", JSON.stringify(notes));
               props.settingsStorage.removeItem("temp_title");
               props.settingsStorage.removeItem("temp_content");
