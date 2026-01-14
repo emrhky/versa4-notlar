@@ -73,7 +73,7 @@ function render() {
         
         detailTitle.text = String(notes[i].content);
         
-        // SARI KAĞITTA BEYAZ YAZI OKUNMAZ: Siyaha çevir
+        // Beyaz yazı rengi seçildiyse açık zeminde siyah olarak göster
         if (notes[i].txtColor === "white" || notes[i].txtColor === "#FFFFFF") {
            detailTitle.style.fill = "black";
         } else {
