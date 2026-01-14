@@ -1,41 +1,36 @@
 import { settingsStorage } from "settings";
 import * as messaging from "messaging";
 
-function sendAll() {
+function send() {
   if (messaging.peerSocket.readyState !== messaging.peerSocket.OPEN) return;
   
-  // 1. Notları Temizle ve Gönder
   const notes = settingsStorage.getItem("notes_list");
   if (notes) {
     const raw = JSON.parse(notes);
     const clean = raw.map(item => {
-      let parts = item.name.split('|');
+      let p = item.name.split('|');
       return { 
-        title: parts[0] ? parts[0].trim() : "Başlıksız", 
-        content: parts[1] ? parts[1].trim() : "", 
-        bgColor: item.bgColor || "black",
-        txtColor: item.txtColor || "white",
+        title: p[0].trim(), content: p[1] || "", 
+        bgColor: item.bgColor || "grey", txtColor: item.txtColor || "white",
         timestamp: item.timestamp || ""
       };
     });
     messaging.peerSocket.send(clean);
   }
 
-  // 2. Checklist Verisini Gönder
-  const list = settingsStorage.getItem("checklist_data");
-  if (list) {
-    messaging.peerSocket.send({ type: "checklist", data: JSON.parse(list) });
+  const check = settingsStorage.getItem("checklist_data");
+  if (check) {
+    messaging.peerSocket.send({ type: "checklist", data: JSON.parse(check) });
   }
 }
 
-settingsStorage.onchange = sendAll;
-messaging.peerSocket.onopen = sendAll;
-
+settingsStorage.onchange = send;
+messaging.peerSocket.onopen = send;
 messaging.peerSocket.onmessage = (evt) => {
-  if (evt.data && evt.data.action === "delete") {
-    let current = JSON.parse(settingsStorage.getItem("notes_list") || "[]");
-    current.splice(evt.data.index, 1);
-    settingsStorage.setItem("notes_list", JSON.stringify(current));
-    sendAll();
+  if (evt.data.action === "delete") {
+    let c = JSON.parse(settingsStorage.getItem("notes_list") || "[]");
+    c.splice(evt.data.index, 1);
+    settingsStorage.setItem("notes_list", JSON.stringify(c));
+    send();
   }
 };
