@@ -52,7 +52,6 @@ messaging.peerSocket.onmessage = (evt) => {
 };
 
 function render() {
-  // Not yoksa uyarıyı göster
   if (!notes || notes.length === 0) {
     emptyLabel.style.display = "inline";
   } else {
@@ -74,7 +73,7 @@ function render() {
         
         detailTitle.text = String(notes[i].content);
         
-        // BEYAZ YAZI MANTIĞI: Yazı beyazsa sarı kağıt üstünde siyah yap
+        // BEYAZ YAZI KONTROLÜ: Sarı zemin üzerinde okunabilirlik
         if (notes[i].txtColor === "white" || notes[i].txtColor === "#FFFFFF") {
            detailTitle.style.fill = "black";
         } else {
