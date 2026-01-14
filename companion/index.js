@@ -13,13 +13,15 @@ function sendData() {
           return {
             title: parts[0] ? parts[0].trim().substring(0, 20) : "Başlıksız",
             content: parts[1] ? parts[1].trim() : fullText.trim(),
-            bgColor: item.bgColor || "#000000",
-            txtColor: item.txtColor || "#FFFFFF",
+            bgColor: item.bgColor || "black",
+            txtColor: item.txtColor || "white",
             timestamp: item.timestamp || ""
           };
         });
         messaging.peerSocket.send(clean);
-      } catch(e) {}
+      } catch(e) {
+        console.log("Companion error: " + e);
+      }
     }
   }
 }
