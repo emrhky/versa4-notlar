@@ -62,26 +62,22 @@ function render() {
     if (notes && notes[i]) {
       row.group.style.display = "inline";
       row.txt.text = String(notes[i].title);
+      row.rect.style.fill = String(notes[i].bgColor);
+      row.txt.style.fill = String(notes[i].txtColor);
       
-      // Renkleri kesin olarak ata
-      row.rect.style.fill = notes[i].bgColor || "grey";
-      row.txt.style.fill = notes[i].txtColor || "white";
-      
-      // TIKLAMA OLAYI (KUTUYA BAĞLI)
       row.rect.onclick = () => {
         currentIdx = i;
-        
-        // Detay başlığı renkleri
-        detailHeaderBg.style.fill = notes[i].bgColor || "grey";
-        detailHeaderTxt.style.fill = notes[i].txtColor || "white";
+        detailHeaderBg.style.fill = String(notes[i].bgColor);
+        detailHeaderTxt.style.fill = String(notes[i].txtColor);
         detailHeaderTxt.text = String(notes[i].title);
         
-        // İçerik ve Renk İstisnası
         detailTitle.text = String(notes[i].content);
+        
+        // SARI KAĞITTA BEYAZ YAZI OKUNMAZ: Siyaha çevir
         if (notes[i].txtColor === "white" || notes[i].txtColor === "#FFFFFF") {
            detailTitle.style.fill = "black";
         } else {
-           detailTitle.style.fill = notes[i].txtColor;
+           detailTitle.style.fill = String(notes[i].txtColor);
         }
         
         detailTimestamp.text = String(notes[i].timestamp || "");
