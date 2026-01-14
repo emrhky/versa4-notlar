@@ -1,28 +1,43 @@
 registerSettingsPage((props) => (
   <Page>
-    <Section title="1. Not Ekleme (Düz Metin)">
+    <Section title="1. Not Defteri (Düz Metin)">
       <TextInput label="Başlık" placeholder="Örn: Hafta Sonu" settingsKey="temp_title" />
-      <TextInput label="İçerik" placeholder="Notunuzu yazın..." settingsKey="temp_content" multiline={false} />
+      <TextInput label="İçerik" placeholder="Notunuzu buraya yazın..." settingsKey="temp_content" />
+      
+      <Text bold italic>Başlık Rengi (Liste)</Text>
       <ColorSelect
         settingsKey="temp_bg_color"
-        colors={[{color: 'black'}, {color: 'grey'}, {color: 'red'}, {color: 'blue'}, {color: 'green'}]}
+        colors={[{color: 'black'}, {color: 'grey'}, {color: 'yellow'}, {color: 'red'}, {color: 'orange'}, {color: 'green'}]}
       />
+      
+      <Text bold italic>Yazı Rengi</Text>
+      <ColorSelect
+        settingsKey="temp_txt_color"
+        colors={[{color: 'black'}, {color: 'white'}, {color: 'red'}, {color: 'green'}, {color: 'blue'}]}
+      />
+
       <Button
         list
-        label="NOTU KAYDET"
+        label="NOTU KAYDET VE GÖNDER"
         onClick={() => {
           const t = props.settingsStorage.getItem("temp_title");
           const c = props.settingsStorage.getItem("temp_content");
-          const bg = props.settingsStorage.getItem("temp_bg_color") || '{"color":"black"}';
+          const bg = props.settingsStorage.getItem("temp_bg_color");
+          const txt = props.settingsStorage.getItem("temp_txt_color");
+          
           if (t && c) {
             let notes = JSON.parse(props.settingsStorage.getItem("notes_list") || "[]");
             if (notes.length < 5) {
               const now = new Date();
-              const ts = `${now.getHours()}:${now.getMinutes()}, ${now.getDate()}/${now.getMonth()+1}`;
+              const ts = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}, ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}`;
+
+              let bgVal = bg ? JSON.parse(bg).color : "black";
+              let txtVal = txt ? JSON.parse(txt).color : "white";
+
               notes.push({
                 name: `${JSON.parse(t).name} | ${JSON.parse(c).name}`,
-                bgColor: JSON.parse(bg).color || "black",
-                txtColor: "white",
+                bgColor: String(bgVal),
+                txtColor: String(txtVal),
                 timestamp: ts
               });
               props.settingsStorage.setItem("notes_list", JSON.stringify(notes));
@@ -34,7 +49,7 @@ registerSettingsPage((props) => (
       />
     </Section>
 
-    <Section title="2. Hızlı Liste (Tik Atılabilir)">
+    <Section title="2. Alışveriş Listesi (Tik Atılabilir)">
       <TextInput label="Madde 1" settingsKey="li1" />
       <TextInput label="Madde 2" settingsKey="li2" />
       <TextInput label="Madde 3" settingsKey="li3" />
@@ -42,7 +57,7 @@ registerSettingsPage((props) => (
       <TextInput label="Madde 5" settingsKey="li5" />
       <Button
         list
-        label="LİSTEYİ GÜNCELLE"
+        label="LİSTEYİ SAATE GÖNDER"
         onClick={() => {
           const items = [];
           for(let i=1; i<=5; i++) {
@@ -54,7 +69,7 @@ registerSettingsPage((props) => (
       />
     </Section>
 
-    <Section title="Mevcut Notlar">
+    <Section title="Kayıtlı Notlar">
       <AdditiveList
         settingsKey="notes_list"
         maxItems="5"
