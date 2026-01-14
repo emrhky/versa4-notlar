@@ -3,15 +3,17 @@ registerSettingsPage((props) => (
     <Section title="Yeni Not Ekle">
       <TextInput 
         label="Başlık (Liste İsmi)" 
-        placeholder="Örn: Market Listesi" 
+        placeholder="Örn: Hafta Sonu Planı" 
         settingsKey="temp_title" 
       />
       
-      <Text bold align="center">Not İçeriği (Saat Görünümü)</Text>
+      <Text bold align="center">Not İçeriği (Saat Ekranı Gibi)</Text>
+      {/* multiline={true} metnin kaymasını sağlar, rows pencereyi genişletir */}
       <TextInput
         label="Notunuzu buraya yazın..."
         settingsKey="temp_content"
         multiline={true}
+        rows={6}
       />
       
       <Text bold italic>Başlık Rengi (Liste)</Text>
@@ -47,7 +49,6 @@ registerSettingsPage((props) => (
               const now = new Date();
               const ts = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}, ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()}`;
 
-              // Renk nesnelerini stringe dönüştür (KRİTİK DÜZELTME)
               let finalBg = "black";
               let finalTxt = "white";
               
