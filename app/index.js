@@ -4,6 +4,7 @@ import * as fs from "fs";
 import clock from "clock";
 
 const clockLabel = document.getElementById("clock-label");
+const emptyLabel = document.getElementById("empty-label");
 const detailView = document.getElementById("detail-view");
 const detailTitle = document.getElementById("detail-title");
 const detailHeaderBg = document.getElementById("detail-header-bg");
@@ -40,7 +41,7 @@ try {
     notes = fs.readFileSync(FILE_NAME, "json");
     render();
   }
-} catch (e) { notes = []; }
+} catch (e) { notes = []; render(); }
 
 messaging.peerSocket.onmessage = (evt) => {
   if (evt.data) {
@@ -51,12 +52,17 @@ messaging.peerSocket.onmessage = (evt) => {
 };
 
 function render() {
+  // Not yoksa uyarıyı göster
+  if (!notes || notes.length === 0) {
+    emptyLabel.style.display = "inline";
+  } else {
+    emptyLabel.style.display = "none";
+  }
+
   rows.forEach((row, i) => {
     if (notes && notes[i]) {
       row.group.style.display = "inline";
       row.txt.text = String(notes[i].title);
-      
-      // RENK UYGULAMA (Garantili yöntem)
       row.rect.style.fill = notes[i].bgColor;
       row.txt.style.fill = notes[i].txtColor;
       
@@ -67,9 +73,15 @@ function render() {
         detailHeaderTxt.text = String(notes[i].title);
         
         detailTitle.text = String(notes[i].content);
-        detailTitle.style.fill = notes[i].txtColor; 
-        detailTimestamp.text = String(notes[i].timestamp || "");
         
+        // BEYAZ YAZI MANTIĞI: Yazı beyazsa sarı kağıt üstünde siyah yap
+        if (notes[i].txtColor === "white" || notes[i].txtColor === "#FFFFFF") {
+           detailTitle.style.fill = "black";
+        } else {
+           detailTitle.style.fill = notes[i].txtColor;
+        }
+        
+        detailTimestamp.text = String(notes[i].timestamp || "");
         detailView.style.display = "inline";
       };
     } else {
