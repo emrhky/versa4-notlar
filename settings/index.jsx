@@ -1,12 +1,16 @@
 registerSettingsPage((props) => (
   <Page>
     <Section title="Yeni Not Ekle">
-      <TextInput label="Başlık" placeholder="Örn: Alışveriş" settingsKey="temp_title" />
-      <TextArea
+      <TextInput 
+        label="Başlık" 
+        placeholder="Örn: Alışveriş Listesi" 
+        settingsKey="temp_title" 
+      />
+      <TextInput
         label="Not İçeriği"
         placeholder="Buraya notunuzu yazın (Enter ile alt satıra geçebilirsiniz)..."
         settingsKey="temp_content"
-        rows={4}
+        multiline={true}
       />
       
       <Text bold italic>Başlık Rengi (Liste)</Text>
@@ -42,13 +46,13 @@ registerSettingsPage((props) => (
               const now = new Date();
               const ts = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}, ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()}`;
 
-              let bgVal = bg ? JSON.parse(bg) : "black";
-              let txtVal = txt ? JSON.parse(txt) : "white";
+              let bgVal = bg ? JSON.parse(bg).color : "black";
+              let txtVal = txt ? JSON.parse(txt).color : "white";
 
               notes.push({
                 name: `${JSON.parse(t).name} | ${JSON.parse(c).name}`,
-                bgColor: bgVal.color || bgVal,
-                txtColor: txtVal.color || txtVal,
+                bgColor: bgVal,
+                txtColor: txtVal,
                 timestamp: ts
               });
               
