@@ -4,17 +4,19 @@ import * as fs from "fs";
 import clock from "clock";
 import { locale } from "user-settings";
 
-// Dil Sözlüğü
-const isTr = locale.language.startsWith("tr");
-const ui = {
-  empty: isTr ? "Henüz bir notunuz yok. Lütfen telefon uygulamasından ekleyin." : "No notes yet. Please add a note from the phone app.",
-  back: isTr ? "GERİ" : "BACK",
-  del: isTr ? "SİL" : "DELETE",
-  conf: isTr ? "Silinsin mi?" : "Delete note?",
-  yes: isTr ? "EVET" : "YES",
-  no: isTr ? "HAYIR" : "NO"
+// --- Dil Ayarları (Güvenli Kontrol) ---
+const getLang = () => {
+  try {
+    return (locale.language && locale.language.indexOf("tr") === 0) ? "tr" : "en";
+  } catch (e) { return "en"; }
 };
 
+const ui = {
+  tr: { empty: "Henüz bir notunuz yok. Lütfen telefondan ekleyin.", back: "GERİ", del: "SİL", conf: "Silinsin mi?", yes: "EVET", no: "HAYIR" },
+  en: { empty: "No notes yet. Please add a note from the phone app.", back: "BACK", del: "DELETE", conf: "Delete note?", yes: "YES", no: "NO" }
+}[getLang()];
+
+// --- Elementleri Tanımla ---
 const clockLabel = document.getElementById("clock-label");
 const emptyLabel = document.getElementById("empty-label");
 const detailView = document.getElementById("detail-view");
@@ -22,47 +24,56 @@ const detailTitle = document.getElementById("detail-title");
 const detailHeaderBg = document.getElementById("detail-header-bg");
 const detailHeaderTxt = document.getElementById("detail-header-txt");
 const detailTimestamp = document.getElementById("detail-timestamp");
-
 const btnBack = document.getElementById("btn-back");
 const btnDeleteInit = document.getElementById("btn-delete-init");
 const confirmView = document.getElementById("confirm-view");
 const btnYes = document.getElementById("btn-yes");
 const btnNo = document.getElementById("btn-no");
 
-// UI Metinlerini dile göre ata
-emptyLabel.text = ui.empty;
-document.getElementById("txt-back").text = ui.back;
-document.getElementById("txt-del").text = ui.del;
-document.getElementById("txt-conf").text = ui.conf;
-document.getElementById("txt-yes").text = ui.yes;
-document.getElementById("txt-no").text = ui.no;
+// UI Metinlerini Güvenli Ata
+const setUI = (id, text) => {
+  const el = document.getElementById(id);
+  if (el) el.text = text;
+};
+
+setUI("empty-label", ui.empty);
+setUI("txt-back", ui.back);
+setUI("txt-del", ui.del);
+setUI("txt-conf", ui.conf);
+setUI("txt-yes", ui.yes);
+setUI("txt-no", ui.no);
+
+// --- Saat İşlemi (En Üstte Olmalı) ---
+clock.granularity = "minutes";
+clock.ontick = (evt) => {
+  if (clockLabel) {
+    clockLabel.text = ("0" + evt.date.getHours()).slice(-2) + ":" + ("0" + evt.date.getMinutes()).slice(-2);
+  }
+};
 
 const FILE_NAME = "notlar.json";
 let notes = [];
 let currentIdx = -1;
 
-clock.granularity = "minutes";
-clock.ontick = (evt) => {
-  let today = evt.date;
-  clockLabel.text = ("0" + today.getHours()).slice(-2) + ":" + ("0" + today.getMinutes()).slice(-2);
-};
-
-// V3.71 - 5 Slot
 const rows = [];
 for (let i = 0; i < 5; i++) {
-  rows.push({
+  const r = {
     group: document.getElementById(`group-${i}`),
     rect: document.getElementById(`rect-${i}`),
     txt: document.getElementById(`text-${i}`)
-  });
+  };
+  if (r.group) rows.push(r);
 }
 
-try {
-  if (fs.existsSync(FILE_NAME)) {
-    notes = fs.readFileSync(FILE_NAME, "json");
-    render();
-  }
-} catch (e) { notes = []; render(); }
+// --- Dosya Sistemi ---
+const loadNotes = () => {
+  try {
+    if (fs.existsSync(FILE_NAME)) {
+      notes = fs.readFileSync(FILE_NAME, "json");
+      render();
+    }
+  } catch (e) { notes = []; render(); }
+};
 
 messaging.peerSocket.onmessage = (evt) => {
   if (evt.data) {
@@ -73,7 +84,7 @@ messaging.peerSocket.onmessage = (evt) => {
 };
 
 function render() {
-  emptyLabel.style.display = (notes.length === 0) ? "inline" : "none";
+  if (emptyLabel) emptyLabel.style.display = (notes.length === 0) ? "inline" : "none";
 
   rows.forEach((row, i) => {
     if (notes && notes[i]) {
@@ -84,20 +95,17 @@ function render() {
       
       row.rect.onclick = () => {
         currentIdx = i;
-        detailHeaderBg.style.fill = String(notes[i].bgColor);
-        detailHeaderTxt.style.fill = String(notes[i].txtColor);
-        detailHeaderTxt.text = String(notes[i].title);
-        detailTitle.text = String(notes[i].content);
-        
-        // Beyaz yazı istisnası (V3.71)
-        if (notes[i].txtColor === "white" || notes[i].txtColor === "#FFFFFF") {
-           detailTitle.style.fill = "black";
-        } else {
-           detailTitle.style.fill = String(notes[i].txtColor);
+        if (detailHeaderBg) detailHeaderBg.style.fill = String(notes[i].bgColor);
+        if (detailHeaderTxt) {
+          detailHeaderTxt.style.fill = String(notes[i].txtColor);
+          detailHeaderTxt.text = String(notes[i].title);
         }
-        
-        detailTimestamp.text = String(notes[i].timestamp || "");
-        detailView.style.display = "inline";
+        if (detailTitle) {
+          detailTitle.text = String(notes[i].content);
+          detailTitle.style.fill = (notes[i].txtColor === "white" || notes[i].txtColor === "#FFFFFF") ? "black" : String(notes[i].txtColor);
+        }
+        if (detailTimestamp) detailTimestamp.text = String(notes[i].timestamp || "");
+        if (detailView) detailView.style.display = "inline";
       };
     } else {
       row.group.style.display = "none";
@@ -105,10 +113,10 @@ function render() {
   });
 }
 
-btnBack.onclick = () => { detailView.style.display = "none"; };
-btnDeleteInit.onclick = () => { confirmView.style.display = "inline"; };
-btnNo.onclick = () => { confirmView.style.display = "none"; };
-btnYes.onclick = () => {
+if (btnBack) btnBack.onclick = () => { detailView.style.display = "none"; };
+if (btnDeleteInit) btnDeleteInit.onclick = () => { confirmView.style.display = "inline"; };
+if (btnNo) btnNo.onclick = () => { confirmView.style.display = "none"; };
+if (btnYes) btnYes.onclick = () => {
   if (currentIdx > -1) {
     notes.splice(currentIdx, 1);
     fs.writeFileSync(FILE_NAME, notes, "json");
@@ -121,3 +129,5 @@ btnYes.onclick = () => {
     currentIdx = -1;
   }
 };
+
+loadNotes();
