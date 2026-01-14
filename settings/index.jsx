@@ -1,73 +1,30 @@
 registerSettingsPage((props) => (
   <Page>
-    <Section title="Yeni Not Ekle">
-      <TextInput 
-        label="Başlık (Liste İsmi)" 
-        placeholder="Örn: Hafta Sonu Planı" 
-        settingsKey="temp_title" 
-      />
-      
-      <Text bold align="center">Not İçeriği (Saat Ekranı Gibi)</Text>
-      {/* multiline={true} metnin kaymasını sağlar, rows pencereyi genişletir */}
-      <TextInput
-        label="Notunuzu buraya yazın..."
-        settingsKey="temp_content"
-        multiline={true}
-        rows={6}
-      />
-      
-      <Text bold italic>Başlık Rengi (Liste)</Text>
+    <Section title="1. Not Ekleme (Düz Metin)">
+      <TextInput label="Başlık" placeholder="Örn: Hafta Sonu" settingsKey="temp_title" />
+      <TextInput label="İçerik" placeholder="Notunuzu yazın..." settingsKey="temp_content" multiline={false} />
       <ColorSelect
         settingsKey="temp_bg_color"
-        colors={[
-          {color: 'black'}, {color: 'grey'}, {color: 'yellow'}, 
-          {color: 'red'}, {color: 'orange'}, {color: 'green'}
-        ]}
+        colors={[{color: 'black'}, {color: 'grey'}, {color: 'red'}, {color: 'blue'}, {color: 'green'}]}
       />
-      
-      <Text bold italic>Yazı Rengi</Text>
-      <ColorSelect
-        settingsKey="temp_txt_color"
-        colors={[
-          {color: 'black'}, {color: 'white'}, {color: 'red'}, 
-          {color: 'green'}, {color: 'blue'}
-        ]}
-      />
-
       <Button
         list
-        label="NOTU KAYDET VE GÖNDER"
+        label="NOTU KAYDET"
         onClick={() => {
           const t = props.settingsStorage.getItem("temp_title");
           const c = props.settingsStorage.getItem("temp_content");
-          const bg = props.settingsStorage.getItem("temp_bg_color");
-          const txt = props.settingsStorage.getItem("temp_txt_color");
-          
+          const bg = props.settingsStorage.getItem("temp_bg_color") || '{"color":"black"}';
           if (t && c) {
             let notes = JSON.parse(props.settingsStorage.getItem("notes_list") || "[]");
             if (notes.length < 5) {
               const now = new Date();
-              const ts = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}, ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()}`;
-
-              let finalBg = "black";
-              let finalTxt = "white";
-              
-              if (bg) {
-                const parsedBg = JSON.parse(bg);
-                finalBg = typeof parsedBg === 'object' ? parsedBg.color : parsedBg;
-              }
-              if (txt) {
-                const parsedTxt = JSON.parse(txt);
-                finalTxt = typeof parsedTxt === 'object' ? parsedTxt.color : parsedTxt;
-              }
-
+              const ts = `${now.getHours()}:${now.getMinutes()}, ${now.getDate()}/${now.getMonth()+1}`;
               notes.push({
                 name: `${JSON.parse(t).name} | ${JSON.parse(c).name}`,
-                bgColor: String(finalBg),
-                txtColor: String(finalTxt),
+                bgColor: JSON.parse(bg).color || "black",
+                txtColor: "white",
                 timestamp: ts
               });
-              
               props.settingsStorage.setItem("notes_list", JSON.stringify(notes));
               props.settingsStorage.removeItem("temp_title");
               props.settingsStorage.removeItem("temp_content");
@@ -77,7 +34,27 @@ registerSettingsPage((props) => (
       />
     </Section>
 
-    <Section title="Mevcut Notlarım">
+    <Section title="2. Hızlı Liste (Tik Atılabilir)">
+      <TextInput label="Madde 1" settingsKey="li1" />
+      <TextInput label="Madde 2" settingsKey="li2" />
+      <TextInput label="Madde 3" settingsKey="li3" />
+      <TextInput label="Madde 4" settingsKey="li4" />
+      <TextInput label="Madde 5" settingsKey="li5" />
+      <Button
+        list
+        label="LİSTEYİ GÜNCELLE"
+        onClick={() => {
+          const items = [];
+          for(let i=1; i<=5; i++) {
+            const val = props.settingsStorage.getItem(`li${i}`);
+            if(val) items.push({text: JSON.parse(val).name, checked: false});
+          }
+          props.settingsStorage.setItem("checklist_data", JSON.stringify(items));
+        }}
+      />
+    </Section>
+
+    <Section title="Mevcut Notlar">
       <AdditiveList
         settingsKey="notes_list"
         maxItems="5"
