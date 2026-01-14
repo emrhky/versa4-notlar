@@ -6,11 +6,11 @@ registerSettingsPage((props) => (
         placeholder="Örn: Alışveriş Listesi" 
         settingsKey="temp_title" 
       />
-      <TextInput
+      {/* TextArea kullanımı gerçek çok satırlı girişi (Enter) sağlar */}
+      <TextArea
         label="Not İçeriği"
-        placeholder="Buraya notunuzu yazın (Enter ile alt satıra geçebilirsiniz)..."
+        placeholder="Buraya notunuzu yazın (Alt satıra geçebilirsiniz)..."
         settingsKey="temp_content"
-        multiline={true}
       />
       
       <Text bold italic>Başlık Rengi (Liste)</Text>
@@ -46,17 +46,28 @@ registerSettingsPage((props) => (
               const now = new Date();
               const ts = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}, ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()}`;
 
-              let bgVal = bg ? JSON.parse(bg).color : "black";
-              let txtVal = txt ? JSON.parse(txt).color : "white";
+              // Renk verilerini garantili string formatına çevirme
+              let bgVal = "black";
+              let txtVal = "white";
+              
+              if (bg) {
+                const parsedBg = JSON.parse(bg);
+                bgVal = typeof parsedBg === 'object' ? parsedBg.color : parsedBg;
+              }
+              if (txt) {
+                const parsedTxt = JSON.parse(txt);
+                txtVal = typeof parsedTxt === 'object' ? parsedTxt.color : parsedTxt;
+              }
 
               notes.push({
                 name: `${JSON.parse(t).name} | ${JSON.parse(c).name}`,
-                bgColor: bgVal,
-                txtColor: txtVal,
+                bgColor: String(bgVal),
+                txtColor: String(txtVal),
                 timestamp: ts
               });
               
               props.settingsStorage.setItem("notes_list", JSON.stringify(notes));
+              // Formu temizle
               props.settingsStorage.removeItem("temp_title");
               props.settingsStorage.removeItem("temp_content");
             }
@@ -66,6 +77,7 @@ registerSettingsPage((props) => (
     </Section>
 
     <Section title="Mevcut Notlarım">
+      {/* Ekleme butonunu tamamen kaldırmak için addAction eklemiyoruz */}
       <AdditiveList
         settingsKey="notes_list"
         maxItems="5"
