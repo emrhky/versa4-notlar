@@ -63,7 +63,7 @@ function render() {
       row.group.style.display = "inline";
       row.txt.text = String(notes[i].title);
       
-      // RENK UYGULAMA (Garantili yöntem)
+      // RENK UYGULAMA
       row.rect.style.fill = String(notes[i].bgColor);
       row.txt.style.fill = String(notes[i].txtColor);
       
