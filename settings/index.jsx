@@ -3,12 +3,12 @@ registerSettingsPage((props) => (
     <Section title="Yeni Not Ekle">
       <TextInput 
         label="Not Başlığı" 
-        placeholder="Örn: Hafta Sonu Planı" 
+        placeholder="Örn: Market Listesi" 
         settingsKey="temp_title" 
       />
       <TextInput
         label="Not İçeriği"
-        placeholder="Notunuzu buraya yazın..."
+        placeholder="Notunuzu yazın..."
         settingsKey="temp_content"
       />
       
@@ -16,12 +16,8 @@ registerSettingsPage((props) => (
       <ColorSelect
         settingsKey="temp_bg_color"
         colors={[
-          {color: '#D3D3D3'}, // Açık Gri
-          {color: '#B0C4DE'}, // Soft Mavi
-          {color: '#E6E6FA'}, // Lavanta
-          {color: '#F5F5DC'}, // Bej
-          {color: '#FFF0F5'}, // Soft Pembe
-          {color: '#F0FFF0'}  // Soft Yeşil
+          {color: '#D3D3D3'}, {color: '#B0C4DE'}, {color: '#E6E6FA'}, 
+          {color: '#F5F5DC'}, {color: '#FFF0F5'}, {color: '#F0FFF0'}
         ]}
       />
       
@@ -29,11 +25,7 @@ registerSettingsPage((props) => (
       <ColorSelect
         settingsKey="temp_txt_color"
         colors={[
-          {color: 'black'}, 
-          {color: 'white'}, 
-          {color: 'red'}, 
-          {color: 'green'}, 
-          {color: 'blue'}
+          {color: 'black'}, {color: 'white'}, {color: 'red'}, {color: 'green'}, {color: 'blue'}
         ]}
       />
 
@@ -48,9 +40,9 @@ registerSettingsPage((props) => (
           
           if (t && c) {
             let notes = JSON.parse(props.settingsStorage.getItem("notes_list") || "[]");
-            if (notes.length < 5) {
+            // Kapasite 10'a çıkarıldı
+            if (notes.length < 10) {
               const now = new Date();
-              // Yıl bilgisi eklendi (YYYY)
               const ts = now.getHours().toString().padStart(2, '0') + ":" + 
                          now.getMinutes().toString().padStart(2, '0') + ", " + 
                          now.getDate().toString().padStart(2, '0') + "/" + 
@@ -60,14 +52,8 @@ registerSettingsPage((props) => (
               let finalBg = "#D3D3D3";
               let finalTxt = "white";
               
-              if (bg) {
-                const parsedBg = JSON.parse(bg);
-                finalBg = typeof parsedBg === 'object' ? parsedBg.color : parsedBg;
-              }
-              if (txt) {
-                const parsedTxt = JSON.parse(txt);
-                finalTxt = typeof parsedTxt === 'object' ? parsedTxt.color : parsedTxt;
-              }
+              if (bg) { finalBg = JSON.parse(bg).color; }
+              if (txt) { finalTxt = JSON.parse(txt).color; }
 
               notes.push({
                 name: JSON.parse(t).name + " | " + JSON.parse(c).name,
@@ -88,7 +74,7 @@ registerSettingsPage((props) => (
     <Section title="Kayıtlı Notlarım">
       <AdditiveList
         settingsKey="notes_list"
-        maxItems="5"
+        maxItems="10"
         renderItem={({ name }) => <Text>{name.split('|')[0]}</Text>}
       />
     </Section>
