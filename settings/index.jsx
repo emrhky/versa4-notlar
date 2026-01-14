@@ -1,37 +1,66 @@
 registerSettingsPage((props) => (
   <Page>
-    <Section title="1. Not Defteri Ekle">
-      <TextInput label="Başlık" settingsKey="temp_title" />
-      <TextInput label="İçerik" settingsKey="temp_content" />
-      <Text bold italic>Başlık Rengi (Liste)</Text>
+    <Section title="Yeni Not Ekle">
+      <TextInput 
+        label="Not Başlığı" 
+        placeholder="Örn: Hafta Sonu Planı" 
+        settingsKey="temp_title" 
+      />
+      <TextInput
+        label="Not İçeriği"
+        placeholder="Notunuzu buraya yazın..."
+        settingsKey="temp_content"
+      />
+      
+      <Text italic>Başlık Rengi (Soft Tonlar)</Text>
       <ColorSelect
         settingsKey="temp_bg_color"
-        colors={[{color: 'black'}, {color: 'grey'}, {color: 'yellow'}, {color: 'red'}, {color: 'orange'}, {color: 'green'}]}
+        colors={[
+          {color: '#D3D3D3'}, {color: '#B0C4DE'}, {color: '#E6E6FA'}, 
+          {color: '#F5F5DC'}, {color: '#FFF0F5'}, {color: '#F0FFF0'}
+        ]}
       />
-      <Text bold italic>Yazı Rengi</Text>
+      
+      <Text italic>Yazı Rengi</Text>
       <ColorSelect
         settingsKey="temp_txt_color"
-        colors={[{color: 'black'}, {color: 'white'}, {color: 'red'}, {color: 'green'}, {color: 'blue'}]}
+        colors={[
+          {color: 'black'}, {color: 'white'}, {color: 'red'}, {color: 'green'}, {color: 'blue'}
+        ]}
       />
+
       <Button
         list
-        label="NOTU KAYDET"
+        label="NOTU KAYDET VE GÖNDER"
         onClick={() => {
           const t = props.settingsStorage.getItem("temp_title");
           const c = props.settingsStorage.getItem("temp_content");
-          const bg = props.settingsStorage.getItem("temp_bg_color") || '{"color":"black"}';
-          const txt = props.settingsStorage.getItem("temp_txt_color") || '{"color":"white"}';
+          const bg = props.settingsStorage.getItem("temp_bg_color");
+          const txt = props.settingsStorage.getItem("temp_txt_color");
+          
           if (t && c) {
             let notes = JSON.parse(props.settingsStorage.getItem("notes_list") || "[]");
-            if (notes.length < 5) {
+            if (notes.length < 6) {
               const now = new Date();
-              const ts = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+              const ts = now.getHours().toString().padStart(2, '0') + ":" + 
+                         now.getMinutes().toString().padStart(2, '0') + ", " + 
+                         now.getDate().toString().padStart(2, '0') + "/" + 
+                         (now.getMonth() + 1).toString().padStart(2, '0') + "/" + 
+                         now.getFullYear();
+
+              let finalBg = "#D3D3D3";
+              let finalTxt = "white";
+              
+              if (bg) { finalBg = JSON.parse(bg).color; }
+              if (txt) { finalTxt = JSON.parse(txt).color; }
+
               notes.push({
-                name: `${JSON.parse(t).name} | ${JSON.parse(c).name}`,
-                bgColor: JSON.parse(bg).color,
-                txtColor: JSON.parse(txt).color,
+                name: JSON.parse(t).name + " | " + JSON.parse(c).name,
+                bgColor: String(finalBg),
+                txtColor: String(finalTxt),
                 timestamp: ts
               });
+              
               props.settingsStorage.setItem("notes_list", JSON.stringify(notes));
               props.settingsStorage.removeItem("temp_title");
               props.settingsStorage.removeItem("temp_content");
@@ -41,35 +70,10 @@ registerSettingsPage((props) => (
       />
     </Section>
 
-    <Section title="2. Özel Liste (Tik Atılabilir)">
-      <TextInput label="Liste İsmi (Örn: Market)" settingsKey="list_title" />
-      <TextInput label="Madde 1" settingsKey="li1" />
-      <TextInput label="Madde 2" settingsKey="li2" />
-      <TextInput label="Madde 3" settingsKey="li3" />
-      <TextInput label="Madde 4" settingsKey="li4" />
-      <TextInput label="Madde 5" settingsKey="li5" />
-      <Button
-        list
-        label="LİSTEYİ GÜNCELLE"
-        onClick={() => {
-          const title = props.settingsStorage.getItem("list_title") || '{"name":"LİSTEM"}';
-          const items = [];
-          for(let i=1; i<=5; i++) {
-            const val = props.settingsStorage.getItem(`li${i}`);
-            if(val) items.push({text: JSON.parse(val).name, checked: false});
-          }
-          props.settingsStorage.setItem("checklist_data", JSON.stringify({
-            title: JSON.parse(title).name,
-            items: items
-          }));
-        }}
-      />
-    </Section>
-
-    <Section title="Kayıtlı Notlar">
+    <Section title="Kayıtlı Notlarım">
       <AdditiveList
         settingsKey="notes_list"
-        maxItems="5"
+        maxItems="6"
         renderItem={({ name }) => <Text>{name.split('|')[0]}</Text>}
       />
     </Section>
