@@ -3,7 +3,6 @@ import * as messaging from "messaging";
 import * as fs from "fs";
 import clock from "clock";
 
-// Elementleri Tanımla
 const clockLabel = document.getElementById("clock-label");
 const detailView = document.getElementById("detail-view");
 const detailTitle = document.getElementById("detail-title");
@@ -21,16 +20,12 @@ const FILE_NAME = "notlar.json";
 let notes = [];
 let currentIdx = -1;
 
-// --- Saat İşlemleri ---
 clock.granularity = "minutes";
 clock.ontick = (evt) => {
   let today = evt.date;
-  let hours = ("0" + today.getHours()).slice(-2);
-  let mins = ("0" + today.getMinutes()).slice(-2);
-  clockLabel.text = `${hours}:${mins}`;
+  clockLabel.text = ("0" + today.getHours()).slice(-2) + ":" + ("0" + today.getMinutes()).slice(-2);
 };
 
-// --- Liste Satırlarını Hazırla ---
 const rows = [];
 for (let i = 0; i < 5; i++) {
   rows.push({
@@ -40,18 +35,13 @@ for (let i = 0; i < 5; i++) {
   });
 }
 
-// --- Hafızadan Yükle ---
 try {
   if (fs.existsSync(FILE_NAME)) {
     notes = fs.readFileSync(FILE_NAME, "json");
     render();
   }
-} catch (e) {
-  console.log("Yükleme hatası: " + e);
-  notes = [];
-}
+} catch (e) { notes = []; }
 
-// --- Mesajlaşma ---
 messaging.peerSocket.onmessage = (evt) => {
   if (evt.data) {
     notes = evt.data;
@@ -60,28 +50,24 @@ messaging.peerSocket.onmessage = (evt) => {
   }
 };
 
-// --- Ekrana Basma (Render) ---
 function render() {
   rows.forEach((row, i) => {
     if (notes && notes[i]) {
       row.group.style.display = "inline";
       row.txt.text = String(notes[i].title);
       
-      // Renkleri Uygula (Pastel/Siyah/Gri)
-      row.rect.style.fill = notes[i].bgColor || "#333333";
-      row.txt.style.fill = notes[i].txtColor || "#FFFFFF";
+      // RENK UYGULAMA (Garantili yöntem)
+      row.rect.style.fill = notes[i].bgColor;
+      row.txt.style.fill = notes[i].txtColor;
       
       row.rect.onclick = () => {
         currentIdx = i;
-        
-        // Detay Başlık Alanı (Liste ile aynı renkler)
-        detailHeaderBg.style.fill = notes[i].bgColor || "#333333";
-        detailHeaderTxt.style.fill = notes[i].txtColor || "#FFFFFF";
+        detailHeaderBg.style.fill = notes[i].bgColor;
+        detailHeaderTxt.style.fill = notes[i].txtColor;
         detailHeaderTxt.text = String(notes[i].title);
         
-        // Not İçeriği ve Zaman Damgası
         detailTitle.text = String(notes[i].content);
-        detailTitle.style.fill = notes[i].txtColor || "#000000"; 
+        detailTitle.style.fill = notes[i].txtColor; 
         detailTimestamp.text = String(notes[i].timestamp || "");
         
         detailView.style.display = "inline";
@@ -92,7 +78,6 @@ function render() {
   });
 }
 
-// --- Buton Olayları ---
 btnBack.onclick = () => { detailView.style.display = "none"; };
 btnDeleteInit.onclick = () => { confirmView.style.display = "inline"; };
 btnNo.onclick = () => { confirmView.style.display = "none"; };
