@@ -1,7 +1,7 @@
 <svg>
   <rect x="0" y="0" width="100%" height="100%" fill="black" />
   
-  <textarea id="empty-label" x="10%" y="100" width="80%" height="150" fill="#aaaaaa" font-size="24" font-family="System-Regular" display-align="center" text-anchor="middle" display="none" />
+  <text id="empty-label" x="50%" y="150" fill="#aaaaaa" font-size="22" font-family="System-Regular" text-anchor="middle" display="none" />
 
   <g id="group-0" display="none"><rect id="rect-0" x="5%" y="45" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" /><text id="text-0" x="50%" y="78" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" /></g>
   <g id="group-1" display="none"><rect id="rect-1" x="5%" y="95" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" /><text id="text-1" x="50%" y="128" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" /></g>
@@ -11,25 +11,26 @@
 
   <rect id="detail-view" x="0" y="0" width="100%" height="100%" fill="black" display="none">
     <rect id="detail-header-bg" x="0" y="35" width="100%" height="45" fill="grey" />
-    <text id="detail-header-txt" x="50%" y="68" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" text-length="20" />
+    <text id="detail-header-txt" x="50%" y="68" fill="white" font-size="26" text-anchor="middle" pointer-events="none" />
+    
     <rect x="0" y="80" width="100%" height="185" fill="#F9F9F9" />
-    <textarea id="detail-title" x="5%" y="85" width="90%" height="150" font-size="24" font-family="System-Regular" display-align="top" text-length="250" />
-    <text id="detail-timestamp" x="98%" y="260" fill="#888888" font-size="16" font-family="System-Regular" text-anchor="end" text-length="32" />
+    <textarea id="detail-title" x="5%" y="85" width="90%" height="150" font-size="24" display-align="top" pointer-events="none" />
+    <text id="detail-timestamp" x="98%" y="260" fill="#888888" font-size="16" text-anchor="end" />
 
-    <rect id="btn-back" x="5%" y="275" width="42%" height="50" rx="10" ry="10" fill="#333333" pointer-events="all" />
-    <text id="txt-back" x="26%" y="310" fill="white" font-size="24" font-family="System-Regular" text-anchor="middle" pointer-events="none" />
+    <rect id="btn-back" x="5%" y="275" width="42%" height="50" rx="10" fill="#333333" pointer-events="all" />
+    <text id="txt-back" x="26%" y="310" fill="white" font-size="24" text-anchor="middle" pointer-events="none" />
 
-    <rect id="btn-delete-init" x="53%" y="275" width="42%" height="50" rx="10" ry="10" fill="red" pointer-events="all" />
-    <text id="txt-del" x="74%" y="310" fill="white" font-size="24" font-family="System-Regular" text-anchor="middle" pointer-events="none" />
+    <rect id="btn-delete-init" x="53%" y="275" width="42%" height="50" rx="10" fill="red" pointer-events="all" />
+    <text id="txt-del" x="74%" y="310" fill="white" font-size="24" text-anchor="middle" pointer-events="none" />
   </rect>
 
   <rect id="confirm-view" x="0" y="0" width="100%" height="100%" fill="black" display="none">
-    <text id="txt-conf" x="50%" y="100" fill="white" font-size="28" font-family="System-Regular" text-anchor="middle" />
-    <rect id="btn-yes" x="10%" y="140" width="80%" height="55" rx="15" ry="15" fill="red" pointer-events="all" />
-    <text id="txt-yes" x="50%" y="178" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" />
-    <rect id="btn-no" x="10%" y="205" width="80%" height="55" rx="15" ry="15" fill="#333333" pointer-events="all" />
-    <text id="txt-no" x="50%" y="243" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" />
+    <text id="txt-conf" x="50%" y="100" fill="white" font-size="28" text-anchor="middle" />
+    <rect id="btn-yes" x="10%" y="140" width="80%" height="55" rx="15" fill="red" pointer-events="all" />
+    <text id="txt-yes" x="50%" y="178" fill="white" font-size="26" text-anchor="middle" pointer-events="none" />
+    <rect id="btn-no" x="10%" y="205" width="80%" height="55" rx="15" fill="#333333" pointer-events="all" />
+    <text id="txt-no" x="50%" y="243" fill="white" font-size="26" text-anchor="middle" pointer-events="none" />
   </rect>
 
-  <text id="clock-label" x="50%" y="30" fill="grey" font-size="24" font-family="System-Regular" text-anchor="middle">00:00</text>
+  <text id="clock-label" x="50%" y="30" fill="grey" font-size="24" text-anchor="middle">00:00</text>
 </svg>
