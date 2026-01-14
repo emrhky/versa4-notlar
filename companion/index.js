@@ -19,9 +19,7 @@ function sendData() {
           };
         });
         messaging.peerSocket.send(clean);
-      } catch(e) {
-        console.log("Companion error: " + e);
-      }
+      } catch(e) {}
     }
   }
 }
