@@ -2,33 +2,39 @@ registerSettingsPage((props) => (
   <Page>
     <Section title="Yeni Not Ekle">
       <TextInput 
-        label="Başlık (Liste İsmi)" 
+        label="Not Başlığı" 
         placeholder="Örn: Market Listesi" 
         settingsKey="temp_title" 
       />
-      
-      <Text bold align="center">Not İçeriği (Saat Görünümü)</Text>
       <TextInput
-        label="Notunuzu buraya yazın..."
+        label="Not İçeriği"
+        placeholder="Notunuzu buraya yazın..."
         settingsKey="temp_content"
-        multiline={true}
       />
       
-      <Text bold italic>Başlık Rengi (Liste)</Text>
+      <Text italic>Başlık Rengi (Soft Tonlar)</Text>
       <ColorSelect
         settingsKey="temp_bg_color"
         colors={[
-          {color: 'black'}, {color: 'grey'}, {color: 'yellow'}, 
-          {color: 'red'}, {color: 'orange'}, {color: 'green'}
+          {color: '#D3D3D3'}, // Açık Gri
+          {color: '#B0C4DE'}, // Soft Mavi
+          {color: '#E6E6FA'}, // Lavanta
+          {color: '#F5F5DC'}, // Bej
+          {color: '#FFF0F5'}, // Soft Pembe
+          {color: '#F0FFF0'}  // Soft Yeşil
         ]}
       />
       
-      <Text bold italic>Yazı Rengi</Text>
+      <Text italic>Yazı Rengi</Text>
       <ColorSelect
         settingsKey="temp_txt_color"
         colors={[
-          {color: 'black'}, {color: 'white'}, {color: 'red'}, 
-          {color: 'green'}, {color: 'blue'}
+          {color: 'black'}, 
+          {color: 'white'}, 
+          {color: 'red'}, 
+          {color: 'green'}, 
+          {color: 'blue'},
+          {color: 'yellow'} // Sarı eklendi
         ]}
       />
 
@@ -45,10 +51,9 @@ registerSettingsPage((props) => (
             let notes = JSON.parse(props.settingsStorage.getItem("notes_list") || "[]");
             if (notes.length < 5) {
               const now = new Date();
-              const ts = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}, ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()}`;
+              const ts = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}, ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}`;
 
-              // Renk nesnelerini stringe dönüştür (KRİTİK DÜZELTME)
-              let finalBg = "black";
+              let finalBg = "#D3D3D3";
               let finalTxt = "white";
               
               if (bg) {
@@ -76,7 +81,7 @@ registerSettingsPage((props) => (
       />
     </Section>
 
-    <Section title="Mevcut Notlarım">
+    <Section title="Kayıtlı Notlarım">
       <AdditiveList
         settingsKey="notes_list"
         maxItems="5"
