@@ -3,7 +3,7 @@ registerSettingsPage((props) => (
     <Section title="Yeni Not Ekle">
       <TextInput 
         label="Not Başlığı" 
-        placeholder="Örn: Market Listesi" 
+        placeholder="Örn: Hafta Sonu Planı" 
         settingsKey="temp_title" 
       />
       <TextInput
@@ -33,8 +33,7 @@ registerSettingsPage((props) => (
           {color: 'white'}, 
           {color: 'red'}, 
           {color: 'green'}, 
-          {color: 'blue'},
-          {color: 'yellow'} // Sarı eklendi
+          {color: 'blue'}
         ]}
       />
 
@@ -51,7 +50,12 @@ registerSettingsPage((props) => (
             let notes = JSON.parse(props.settingsStorage.getItem("notes_list") || "[]");
             if (notes.length < 5) {
               const now = new Date();
-              const ts = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}, ${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}`;
+              // Yıl bilgisi eklendi (YYYY)
+              const ts = now.getHours().toString().padStart(2, '0') + ":" + 
+                         now.getMinutes().toString().padStart(2, '0') + ", " + 
+                         now.getDate().toString().padStart(2, '0') + "/" + 
+                         (now.getMonth() + 1).toString().padStart(2, '0') + "/" + 
+                         now.getFullYear();
 
               let finalBg = "#D3D3D3";
               let finalTxt = "white";
@@ -66,7 +70,7 @@ registerSettingsPage((props) => (
               }
 
               notes.push({
-                name: `${JSON.parse(t).name} | ${JSON.parse(c).name}`,
+                name: JSON.parse(t).name + " | " + JSON.parse(c).name,
                 bgColor: String(finalBg),
                 txtColor: String(finalTxt),
                 timestamp: ts
