@@ -1,46 +1,36 @@
 <svg>
   <rect x="0" y="0" width="100%" height="100%" fill="black" />
   
-  <textarea id="empty-label" x="10%" y="100" width="80%" height="150" fill="#aaaaaa" font-size="24" font-family="System-Regular" display-align="center" text-anchor="middle" display="none">Henüz bir notunuz yok. Lütfen telefon uygulamasından not ekleyin.</textarea>
+  <scrollview id="scroll-list" x="0" y="35" width="100%" height="100%-35">
+    <textarea id="empty-label" x="10%" y="50" width="80%" height="150" fill="#aaaaaa" font-size="24" font-family="System-Regular" display-align="center" text-anchor="middle" display="none">Henüz bir notunuz yok. Lütfen telefon uygulamasından not ekleyin.</textarea>
 
-  <g id="group-0" display="none">
-    <rect id="rect-0" x="5%" y="45" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" />
-    <text id="text-0" x="50%" y="78" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text>
-  </g>
-  <g id="group-1" display="none">
-    <rect id="rect-1" x="5%" y="95" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" />
-    <text id="text-1" x="50%" y="128" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text>
-  </g>
-  <g id="group-2" display="none">
-    <rect id="rect-2" x="5%" y="145" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" />
-    <text id="text-2" x="50%" y="178" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text>
-  </g>
-  <g id="group-3" display="none">
-    <rect id="rect-3" x="5%" y="195" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" />
-    <text id="text-3" x="50%" y="228" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text>
-  </g>
-  <g id="group-4" display="none">
-    <rect id="rect-4" x="5%" y="245" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" />
-    <text id="text-4" x="50%" y="265" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text>
-  </g>
+    <g id="group-0" display="none"><rect id="rect-0" x="5%" y="10" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" /><text id="text-0" x="50%" y="43" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text></g>
+    <g id="group-1" display="none"><rect id="rect-1" x="5%" y="60" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" /><text id="text-1" x="50%" y="93" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text></g>
+    <g id="group-2" display="none"><rect id="rect-2" x="5%" y="110" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" /><text id="text-2" x="50%" y="143" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text></g>
+    <g id="group-3" display="none"><rect id="rect-3" x="5%" y="160" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" /><text id="text-3" x="50%" y="193" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text></g>
+    <g id="group-4" display="none"><rect id="rect-4" x="5%" y="210" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" /><text id="text-4" x="50%" y="243" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text></g>
+    <g id="group-5" display="none"><rect id="rect-5" x="5%" y="260" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" /><text id="text-5" x="50%" y="293" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text></g>
+    <g id="group-6" display="none"><rect id="rect-6" x="5%" y="310" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" /><text id="text-6" x="50%" y="343" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text></g>
+    <g id="group-7" display="none"><rect id="rect-7" x="5%" y="360" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" /><text id="text-7" x="50%" y="393" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text></g>
+    <g id="group-8" display="none"><rect id="rect-8" x="5%" y="410" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" /><text id="text-8" x="50%" y="443" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text></g>
+    <g id="group-9" display="none"><rect id="rect-9" x="5%" y="460" width="90%" height="45" rx="12" ry="12" fill="grey" pointer-events="all" /><text id="text-9" x="50%" y="493" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" pointer-events="none" text-length="20"></text></g>
+    
+    <rect x="0" y="515" width="100%" height="40" fill="black" />
+  </scrollview>
 
   <rect id="detail-view" x="0" y="0" width="100%" height="100%" fill="black" display="none">
     <rect id="detail-header-bg" x="0" y="35" width="100%" height="45" fill="grey" />
     <text id="detail-header-txt" x="50%" y="68" fill="white" font-size="26" font-family="System-Regular" text-anchor="middle" text-length="20" />
-    
     <rect x="0" y="80" width="100%" height="185" fill="#F9F9F9" />
     <line x1="0" y1="110" x2="100%" y2="110" fill="#E0E0E0" stroke-width="1" />
     <line x1="0" y1="140" x2="100%" y2="140" fill="#E0E0E0" stroke-width="1" />
     <line x1="0" y1="170" x2="100%" y2="170" fill="#E0E0E0" stroke-width="1" />
     <line x1="0" y1="200" x2="100%" y2="200" fill="#E0E0E0" stroke-width="1" />
     <line x1="0" y1="230" x2="100%" y2="230" fill="#E0E0E0" stroke-width="1" />
-
     <textarea id="detail-title" x="5%" y="85" width="90%" height="150" font-size="24" font-family="System-Regular" display-align="top" text-length="250" />
     <text id="detail-timestamp" x="98%" y="260" fill="#888888" font-size="16" font-family="System-Regular" text-anchor="end" text-length="32" />
-
     <rect id="btn-back" x="5%" y="275" width="42%" height="50" rx="10" ry="10" fill="#333333" pointer-events="all" />
     <text x="26%" y="310" fill="white" font-size="24" font-family="System-Regular" text-anchor="middle" pointer-events="none">GERİ</text>
-
     <rect id="btn-delete-init" x="53%" y="275" width="42%" height="50" rx="10" ry="10" fill="red" pointer-events="all" />
     <text x="74%" y="310" fill="white" font-size="24" font-family="System-Regular" text-anchor="middle" pointer-events="none">SİL</text>
   </rect>
