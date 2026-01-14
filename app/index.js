@@ -62,22 +62,18 @@ function render() {
     if (notes && notes[i]) {
       row.group.style.display = "inline";
       row.txt.text = String(notes[i].title);
-      
-      // Renkleri kesin olarak ata
       row.rect.style.fill = notes[i].bgColor || "grey";
       row.txt.style.fill = notes[i].txtColor || "white";
       
-      // TIKLAMA OLAYI (KUTUYA BAĞLI)
+      // Pointer-events garantisi ve tıklama ataması
       row.rect.onclick = () => {
         currentIdx = i;
-        
-        // Detay başlığı renkleri
         detailHeaderBg.style.fill = notes[i].bgColor || "grey";
         detailHeaderTxt.style.fill = notes[i].txtColor || "white";
         detailHeaderTxt.text = String(notes[i].title);
         
-        // İçerik ve Renk İstisnası
         detailTitle.text = String(notes[i].content);
+        // Beyaz yazı istisnası (Sarı kağıt üzerinde siyah yazılsın)
         if (notes[i].txtColor === "white" || notes[i].txtColor === "#FFFFFF") {
            detailTitle.style.fill = "black";
         } else {
