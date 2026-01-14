@@ -1,32 +1,17 @@
 registerSettingsPage((props) => {
-  // Basit dil kontrolü (Fitbit Settings ortamında locale bilgisi browser'dan gelir)
   const isTr = props.settingsStorage.getItem("locale")?.includes("tr") || true; 
-
   const active = isTr ? {
-    title: "Yeni Not Ekle",
-    labelTitle: "Not Başlığı",
-    labelContent: "Not İçeriği",
-    colorBg: "Başlık Rengi (Soft Tonlar)",
-    colorTxt: "Yazı Rengi",
-    btnSave: "NOTU KAYDET VE GÖNDER",
-    listTitle: "Kayıtlı Notlarım"
+    t: "Yeni Not Ekle", h: "Not Başlığı", c: "Not İçeriği", b: "Başlık Rengi", tx: "Yazı Rengi", s: "NOTU KAYDET VE GÖNDER", list: "Kayıtlı Notlarım"
   } : {
-    title: "Add New Note",
-    labelTitle: "Note Title",
-    labelContent: "Note Content",
-    colorBg: "Header Color (Soft Tones)",
-    colorTxt: "Text Color",
-    btnSave: "SAVE AND SEND NOTE",
-    listTitle: "Saved Notes"
+    t: "Add New Note", h: "Note Title", c: "Note Content", b: "Header Color", tx: "Text Color", s: "SAVE AND SEND NOTE", list: "Saved Notes"
   };
 
   return (
     <Page>
-      <Section title={active.title}>
-        <TextInput label={active.labelTitle} settingsKey="temp_title" />
-        <TextInput label={active.labelContent} settingsKey="temp_content" />
-        
-        <Text italic>{active.colorBg}</Text>
+      <Section title={active.t}>
+        <TextInput label={active.h} settingsKey="temp_title" />
+        <TextInput label={active.c} settingsKey="temp_content" />
+        <Text italic>{active.b}</Text>
         <ColorSelect
           settingsKey="temp_bg_color"
           colors={[
@@ -34,24 +19,21 @@ registerSettingsPage((props) => {
             {color: '#F5F5DC'}, {color: '#FFF0F5'}, {color: '#F0FFF0'}
           ]}
         />
-        
-        <Text italic>{active.colorTxt}</Text>
+        <Text italic>{active.tx}</Text>
         <ColorSelect
           settingsKey="temp_txt_color"
           colors={[
             {color: 'black'}, {color: 'white'}, {color: 'red'}, {color: 'green'}, {color: 'blue'}
           ]}
         />
-
         <Button
           list
-          label={active.btnSave}
+          label={active.s}
           onClick={() => {
             const t = props.settingsStorage.getItem("temp_title");
             const c = props.settingsStorage.getItem("temp_content");
             const bg = props.settingsStorage.getItem("temp_bg_color");
             const txt = props.settingsStorage.getItem("temp_txt_color");
-            
             if (t && c) {
               let notes = JSON.parse(props.settingsStorage.getItem("notes_list") || "[]");
               if (notes.length < 5) {
@@ -73,22 +55,14 @@ registerSettingsPage((props) => {
                   txtColor: String(finalTxt),
                   timestamp: ts
                 });
-                
                 props.settingsStorage.setItem("notes_list", JSON.stringify(notes));
-                props.settingsStorage.removeItem("temp_title");
-                props.settingsStorage.removeItem("temp_content");
               }
             }
           }}
         />
       </Section>
-
-      <Section title={active.listTitle}>
-        <AdditiveList
-          settingsKey="notes_list"
-          maxItems="5"
-          renderItem={({ name }) => <Text>{name.split('|')[0]}</Text>}
-        />
+      <Section title={active.list}>
+        <AdditiveList settingsKey="notes_list" maxItems="5" renderItem={({ name }) => <Text>{name.split('|')[0]}</Text>} />
       </Section>
     </Page>
   );
